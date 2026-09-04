@@ -1,0 +1,341 @@
+"""
+Consolidated XAU/USD strategy research engine (self-contained, for the daily
+scheduled job). Reads bars from bars.json (list of {date,open,high,low,close,volume}
+dicts, date as 'YYYY-MM-DD'), runs the full strategy search + adaptive
+walk-forward simulation, and writes:
+  - seed_runs_doc.json   (full snapshot -> db collection "runs", doc id = date)
+  - seed_signal_doc.json (light record  -> db collection "signals", doc id = date)
+  - seed_page.json       (trimmed snapshot, only needed if republishing the page)
+Usage: python3 engine_full.py bars.json
+"""
+import json, math, sys
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+
+import numpy as np
+import pandas as pd
+
+TRADING_DAYS_PER_YEAR = 252
+COST_BPS = 5.0
+
+
+def load_bars(path):
+    with open(path) as f:
+        bars = json.load(f)
+    df = pd.DataFrame(bars)
+    df["date"] = pd.to_datetime(df["date"], utc=True)
+    df = df.sort_values("date").drop_duplicates(subset="date").reset_index(drop=True)
+    df = df[["date", "open", "high", "low", "close", "volume"]]
+    return df
+
+
+def sma(s, n): return s.rolling(n, min_periods=n).mean()
+def ema(s, n): return s.ewm(span=n, adjust=False, min_periods=n).mean()
+
+def rsi(s, n):
+    delta = s.diff()
+    gain = delta.clip(lower=0); loss = -delta.clip(upper=0)
+    avg_gain = gain.ewm(alpha=1/n, adjust=False, min_periods=n).mean()
+    avg_loss = loss.ewm(alpha=1/n, adjust=False, min_periods=n).mean()
+    rs = avg_gain / avg_loss.replace(0, np.nan)
+    return (100 - (100/(1+rs))).fillna(50)
+
+def macd(s, fast, slow, signal):
+    macd_line = ema(s, fast) - ema(s, slow)
+    signal_line = ema(macd_line, signal)
+    return macd_line, signal_line, macd_line - signal_line
+
+def atr(df, n):
+    high, low, close = df["high"], df["low"], df["close"]
+    prev_close = close.shift(1)
+    tr = pd.concat([(high-low),(high-prev_close).abs(),(low-prev_close).abs()], axis=1).max(axis=1)
+    return tr.ewm(alpha=1/n, adjust=False, min_periods=n).mean()
+
+def bollinger(s, n, k):
+    mid = sma(s, n); std = s.rolling(n, min_periods=n).std()
+    return mid - k*std, mid, mid + k*std
+
+def donchian(df, n):
+    return df["low"].rolling(n, min_periods=n).min(), df["high"].rolling(n, min_periods=n).max()
+
+
+def strat_sma_cross(df, fast, slow):
+    f, s = sma(df["close"], fast), sma(df["close"], slow)
+    pos = pd.Series(np.where(f > s, 1, -1), index=df.index)
+    pos[f.isna() | s.isna()] = 0
+    return pos
+
+def strat_ema_cross(df, fast, slow):
+    f, s = ema(df["close"], fast), ema(df["close"], slow)
+    pos = pd.Series(np.where(f > s, 1, -1), index=df.index)
+    pos[f.isna() | s.isna()] = 0
+    return pos
+
+def strat_rsi_meanrev(df, n, low_th, high_th):
+    r = rsi(df["close"], n).values
+    pos_arr = np.zeros(len(df), dtype=int); state = 0
+    for i, v in enumerate(r):
+        if np.isnan(v): pos_arr[i] = 0; continue
+        if v < low_th: state = 1
+        elif v > high_th: state = -1
+        elif (state == 1 and v > 50) or (state == -1 and v < 50): state = 0
+        pos_arr[i] = state
+    return pd.Series(pos_arr, index=df.index)
+
+def strat_macd_cross(df, fast, slow, signal):
+    macd_line, signal_line, hist = macd(df["close"], fast, slow, signal)
+    pos = pd.Series(np.where(hist > 0, 1, -1), index=df.index)
+    pos[macd_line.isna() | signal_line.isna()] = 0
+    return pos
+
+def strat_bb_meanrev(df, n, k):
+    lower, mid, upper = bollinger(df["close"], n, k)
+    close = df["close"]; pos_arr = np.zeros(len(df), dtype=int); state = 0
+    for i in range(len(df)):
+        c, lo, up, m = close.iloc[i], lower.iloc[i], upper.iloc[i], mid.iloc[i]
+        if np.isnan(lo) or np.isnan(up): pos_arr[i] = 0; continue
+        if c < lo: state = 1
+        elif c > up: state = -1
+        elif (state == 1 and c > m) or (state == -1 and c < m): state = 0
+        pos_arr[i] = state
+    return pd.Series(pos_arr, index=df.index)
+
+def strat_bb_breakout(df, n, k):
+    lower, mid, upper = bollinger(df["close"], n, k)
+    close = df["close"]; pos = pd.Series(0, index=df.index)
+    pos[close > upper] = 1; pos[close < lower] = -1
+    pos = pos.replace(0, np.nan).ffill().fillna(0)
+    pos[mid.isna()] = 0
+    return pos
+
+def strat_donchian_breakout(df, n):
+    lower, upper = donchian(df, n)
+    close = df["close"]; pos = pd.Series(0, index=df.index)
+    pos[close >= upper.shift(1)] = 1; pos[close <= lower.shift(1)] = -1
+    pos = pos.replace(0, np.nan).ffill().fillna(0)
+    pos[upper.isna() | lower.isna()] = 0
+    return pos
+
+def strat_momentum(df, n, threshold_pct):
+    ret_n = df["close"].pct_change(n)
+    pos = pd.Series(0, index=df.index)
+    pos[ret_n > threshold_pct] = 1; pos[ret_n < -threshold_pct] = -1
+    pos[ret_n.isna()] = 0
+    return pos
+
+def strat_atr_trend(df, ema_n, atr_n, mult):
+    e = ema(df["close"], ema_n); a = atr(df, atr_n)
+    upper_band = e + mult*a; lower_band = e - mult*a
+    close = df["close"]; pos_arr = np.zeros(len(df), dtype=int); state = 0
+    for i in range(len(df)):
+        c, ub, lb = close.iloc[i], upper_band.iloc[i], lower_band.iloc[i]
+        if np.isnan(ub) or np.isnan(lb): pos_arr[i] = 0; continue
+        if c > ub: state = 1
+        elif c < lb: state = -1
+        pos_arr[i] = state
+    return pd.Series(pos_arr, index=df.index)
+
+
+STRATEGY_REGISTRY = {
+    "SMA Crossover": {"fn": strat_sma_cross, "grid": [{"fast": f, "slow": s} for f in (5,10,20) for s in (50,100,200) if f<s]},
+    "EMA Crossover": {"fn": strat_ema_cross, "grid": [{"fast": f, "slow": s} for f in (5,8,12,20) for s in (26,50,100) if f<s]},
+    "RSI Mean Reversion": {"fn": strat_rsi_meanrev, "grid": [{"n": n, "low_th": lo, "high_th": 100-lo} for n in (7,14,21) for lo in (20,25,30)]},
+    "MACD Crossover": {"fn": strat_macd_cross, "grid": [{"fast":12,"slow":26,"signal":9},{"fast":8,"slow":17,"signal":9},{"fast":5,"slow":35,"signal":5},{"fast":19,"slow":39,"signal":9}]},
+    "Bollinger Mean Reversion": {"fn": strat_bb_meanrev, "grid": [{"n": n, "k": k} for n in (14,20,30) for k in (1.5,2.0,2.5)]},
+    "Bollinger Breakout": {"fn": strat_bb_breakout, "grid": [{"n": n, "k": k} for n in (14,20,30) for k in (1.5,2.0,2.5)]},
+    "Donchian Breakout": {"fn": strat_donchian_breakout, "grid": [{"n": n} for n in (10,20,55,100)]},
+    "Momentum": {"fn": strat_momentum, "grid": [{"n": n, "threshold_pct": t} for n in (5,10,20) for t in (0.01,0.02,0.03)]},
+    "ATR Trend (Keltner-style)": {"fn": strat_atr_trend, "grid": [{"ema_n": e, "atr_n": a, "mult": m} for e in (20,50) for a in (10,14) for m in (1.5,2.0,2.5)]},
+}
+
+
+@dataclass
+class BacktestResult:
+    n_trades: int; total_return_pct: float; cagr_pct: float; max_drawdown_pct: float
+    win_rate_pct: float; profit_factor: float; sharpe: float; calmar: float
+    avg_trade_pct: float; equity_curve: list = field(default_factory=list); dates: list = field(default_factory=list)
+
+
+def run_backtest(df, pos, cost_bps=COST_BPS):
+    close = df["close"].values; n = len(df)
+    pos_shifted = pos.shift(1).fillna(0).values
+    ret = np.zeros(n); ret[1:] = (close[1:]-close[:-1])/close[:-1]
+    strat_ret = pos_shifted * ret
+    pos_change = np.abs(np.diff(np.concatenate([[0], pos_shifted])))
+    cost = pos_change * (cost_bps/10000.0)
+    strat_ret_net = strat_ret - cost
+    equity = np.cumprod(1+strat_ret_net)
+    total_return_pct = (equity[-1]-1)*100
+    n_years = n/TRADING_DAYS_PER_YEAR
+    cagr = (equity[-1]**(1/n_years)-1)*100 if n_years>0 and equity[-1]>0 else -100.0
+    running_max = np.maximum.accumulate(equity)
+    drawdown = (equity-running_max)/running_max
+    max_dd_pct = drawdown.min()*100
+    trades = []; cur_sign = 0; entry_idx = None
+    for i in range(n):
+        sign = np.sign(pos_shifted[i])
+        if sign != cur_sign:
+            if cur_sign != 0 and entry_idx is not None: trades.append((entry_idx, i))
+            entry_idx = i if sign != 0 else None
+            cur_sign = sign
+    if cur_sign != 0 and entry_idx is not None: trades.append((entry_idx, n))
+    trade_returns = np.array([np.prod(1+strat_ret_net[a:b])-1 for a,b in trades]) if trades else np.array([0.0])
+    wins = trade_returns[trade_returns>0]; losses = trade_returns[trade_returns<=0]
+    win_rate = (len(wins)/len(trade_returns)*100) if len(trade_returns)>0 else 0.0
+    gross_profit = wins.sum(); gross_loss = -losses.sum()
+    profit_factor = (gross_profit/gross_loss) if gross_loss>1e-9 else (float("inf") if gross_profit>0 else 0.0)
+    daily_std = strat_ret_net.std(ddof=1) if n>1 else 0.0
+    sharpe = (strat_ret_net.mean()/daily_std*math.sqrt(TRADING_DAYS_PER_YEAR)) if daily_std>1e-12 else 0.0
+    calmar = (cagr/abs(max_dd_pct)) if abs(max_dd_pct)>1e-9 else 0.0
+    return BacktestResult(
+        n_trades=len(trades), total_return_pct=round(total_return_pct,2), cagr_pct=round(cagr,2),
+        max_drawdown_pct=round(max_dd_pct,2), win_rate_pct=round(win_rate,2),
+        profit_factor=round(profit_factor,3) if math.isfinite(profit_factor) else 999.0,
+        sharpe=round(sharpe,3), calmar=round(calmar,3), avg_trade_pct=round(trade_returns.mean()*100,3),
+        equity_curve=[round(x,5) for x in equity.tolist()], dates=df["date"].dt.strftime("%Y-%m-%d").tolist(),
+    )
+
+
+def score(res, min_trades=15):
+    if res.n_trades < min_trades: return -999.0
+    if res.max_drawdown_pct < -60: return -500.0
+    return 0.5*res.sharpe + 0.5*(res.calmar/2.0)
+
+
+def search_all(df, train_frac=0.7, min_trades=15):
+    n = len(df); split = int(n*train_frac)
+    train_df = df.iloc[:split].reset_index(drop=True)
+    test_df = df.iloc[split:].reset_index(drop=True)
+    all_results = []
+    for strat_name, spec in STRATEGY_REGISTRY.items():
+        for params in spec["grid"]:
+            try:
+                res_train = run_backtest(train_df, spec["fn"](train_df, **params))
+            except Exception: continue
+            pos_full = spec["fn"](df, **params)
+            res_full = run_backtest(df, pos_full)
+            test_pos = pos_full.iloc[split:].reset_index(drop=True)
+            try:
+                res_test = run_backtest(test_df, test_pos)
+            except Exception: continue
+            all_results.append({"strategy": strat_name, "params": params, "train": res_train,
+                                 "test": res_test, "full": res_full,
+                                 "score_test": score(res_test, min_trades), "score_train": score(res_train, min_trades)})
+    all_results.sort(key=lambda r: r["score_test"], reverse=True)
+    return all_results, split
+
+
+def latest_signal(df, strat_name, params):
+    pos = STRATEGY_REGISTRY[strat_name]["fn"](df, **params)
+    last_pos = int(pos.iloc[-1])
+    label = {1:"MUA (Long)", -1:"BÁN (Short)", 0:"ĐỨNG NGOÀI (Flat)"}[last_pos]
+    return {"position": last_pos, "label": label, "as_of_date": df["date"].iloc[-1].strftime("%Y-%m-%d"),
+            "as_of_close": float(df["close"].iloc[-1])}
+
+
+def build_position_cache(df):
+    cache = {}
+    for strat_name, spec in STRATEGY_REGISTRY.items():
+        for params in spec["grid"]:
+            key = (strat_name, tuple(sorted(params.items())))
+            try: pos = spec["fn"](df, **params)
+            except Exception: continue
+            cache[key] = (strat_name, params, pos)
+    return cache
+
+
+def walk_forward(df, window=63, lookback=504, min_trades_window=3):
+    cache = build_position_cache(df); n = len(df); log = []; current_choice = None
+    start = lookback
+    while start < n:
+        end = min(start+window, n)
+        train_slice = df.iloc[max(0,start-lookback):start].reset_index(drop=True)
+        if len(train_slice) < 30: start = end; continue
+        ranked = []
+        for key,(strat_name, params, pos_full) in cache.items():
+            pos_train = pos_full.iloc[max(0,start-lookback):start].reset_index(drop=True)
+            try: res = run_backtest(train_slice, pos_train)
+            except Exception: continue
+            ranked.append((score(res, min_trades=5), strat_name, params, res))
+        if not ranked: start = end; continue
+        ranked.sort(key=lambda r: r[0], reverse=True)
+        best_score, best_name, best_params, _ = ranked[0]
+        switched = current_choice is not None and (best_name, tuple(sorted(best_params.items()))) != current_choice
+        current_choice = (best_name, tuple(sorted(best_params.items())))
+        fwd_slice = df.iloc[start:end].reset_index(drop=True)
+        key = (best_name, tuple(sorted(best_params.items())))
+        pos_fwd = cache[key][2].iloc[start:end].reset_index(drop=True)
+        try: fwd_res = run_backtest(fwd_slice, pos_fwd)
+        except Exception: start = end; continue
+        log.append({"period_start": df["date"].iloc[start].strftime("%Y-%m-%d"),
+                     "period_end": df["date"].iloc[end-1].strftime("%Y-%m-%d"),
+                     "strategy": best_name, "params": best_params, "switched": switched,
+                     "selection_score": round(best_score,3), "realized_return_pct": fwd_res.total_return_pct,
+                     "realized_sharpe": fwd_res.sharpe, "realized_max_dd_pct": fwd_res.max_drawdown_pct,
+                     "realized_trades": fwd_res.n_trades, "realized_win_rate_pct": fwd_res.win_rate_pct})
+        start = end
+    return log
+
+
+def summarize_wf(log):
+    if not log: return {}
+    equity = 1.0; curve = []
+    for rec in log:
+        equity *= (1+rec["realized_return_pct"]/100.0)
+        curve.append({"period_end": rec["period_end"], "equity": round(equity,4)})
+    n_switches = sum(1 for r in log if r["switched"])
+    strat_usage = {}
+    for r in log:
+        u = strat_usage.setdefault(r["strategy"], {"periods":0, "total_return_pct":0.0})
+        u["periods"] += 1; u["total_return_pct"] += r["realized_return_pct"]
+    return {"n_periods": len(log), "n_switches": n_switches,
+            "adaptive_total_return_pct": round((equity-1)*100,2), "equity_curve": curve, "strategy_usage": strat_usage}
+
+
+def strip_curve(res):
+    return {"n_trades": res.n_trades, "total_return_pct": res.total_return_pct, "cagr_pct": res.cagr_pct,
+            "max_drawdown_pct": res.max_drawdown_pct, "win_rate_pct": res.win_rate_pct,
+            "profit_factor": res.profit_factor, "sharpe": res.sharpe, "calmar": res.calmar,
+            "avg_trade_pct": res.avg_trade_pct}
+
+
+def main(bars_path):
+    df = load_bars(bars_path)
+    results, split = search_all(df)
+    best = results[0]
+    TOP_N = 20
+    leaderboard = [{"strategy": r["strategy"], "params": r["params"], "score_test": round(r["score_test"],3),
+                     "test": strip_curve(r["test"]), "full": strip_curve(r["full"])} for r in results[:TOP_N]]
+    equity_curve_full = [{"date": d, "equity": e} for d, e in zip(best["full"].dates, best["full"].equity_curve)]
+    step = max(1, len(equity_curve_full)//300)
+    equity_curve_thin = equity_curve_full[::step]
+    if equity_curve_thin[-1] != equity_curve_full[-1]: equity_curve_thin.append(equity_curve_full[-1])
+    live_sig = latest_signal(df, best["strategy"], best["params"])
+    wf_log = walk_forward(df)
+    wf_summary = summarize_wf(wf_log)
+
+    page_seed = {
+        "date": df["date"].iloc[-1].strftime("%Y-%m-%d"),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "data_source": "TradingView layout 'Nguyen 7' (OANDA:XAUUSD), daily",
+        "data_range": {"start": df["date"].iloc[0].strftime("%Y-%m-%d"), "end": df["date"].iloc[-1].strftime("%Y-%m-%d"), "n_bars": len(df)},
+        "train_test_split_date": df["date"].iloc[split].strftime("%Y-%m-%d"),
+        "n_variants_tested": len(results),
+        "n_strategy_families": len(STRATEGY_REGISTRY),
+        "leaderboard": leaderboard,
+        "best_strategy": {"strategy": best["strategy"], "params": best["params"], "test": strip_curve(best["test"]),
+                            "full": strip_curve(best["full"]), "equity_curve": equity_curve_thin},
+        "live_signal": live_sig,
+        "walk_forward": {"log": wf_log, "summary": wf_summary},
+    }
+    with open("seed_runs_doc.json", "w") as f: json.dump(page_seed, f)
+    with open("seed_page.json", "w") as f: json.dump(page_seed, f)
+    signals_doc = {"date": live_sig["as_of_date"], "strategy": best["strategy"], "params": best["params"],
+                    "position": live_sig["position"], "label": live_sig["label"], "as_of_close": live_sig["as_of_close"]}
+    with open("seed_signal_doc.json", "w") as f: json.dump(signals_doc, f)
+    print("OK date=%s strategy=%s params=%s signal=%s close=%.3f" % (
+        page_seed["date"], best["strategy"], json.dumps(best["params"]), live_sig["label"], live_sig["as_of_close"]))
+
+
+if __name__ == "__main__":
+    main(sys.argv[1] if len(sys.argv) > 1 else "bars.json")
