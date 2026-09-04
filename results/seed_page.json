@@ -1,0 +1,2652 @@
+{
+  "date": "2026-09-03",
+  "generated_at": "2026-09-04T06:26:28.025551+00:00",
+  "data_source": "TradingView layout 'Nguyen 7' (OANDA:XAUUSD), daily",
+  "data_range": {
+    "start": "2014-08-20",
+    "end": "2026-09-03",
+    "n_bars": 3110
+  },
+  "train_test_split_date": "2023-01-24",
+  "n_variants_tested": 77,
+  "n_strategy_families": 9,
+  "leaderboard": [
+    {
+      "strategy": "Bollinger Breakout",
+      "params": {
+        "n": 14,
+        "k": 2.0
+      },
+      "score_test": 0.748,
+      "test": {
+        "n_trades": 19,
+        "total_return_pct": 87.99,
+        "cagr_pct": 18.59,
+        "max_drawdown_pct": -17.74,
+        "win_rate_pct": 36.84,
+        "profit_factor": 3.168,
+        "sharpe": 0.971,
+        "calmar": 1.048,
+        "avg_trade_pct": 4.035
+      },
+      "full": {
+        "n_trades": 68,
+        "total_return_pct": 66.05,
+        "cagr_pct": 4.19,
+        "max_drawdown_pct": -45.43,
+        "win_rate_pct": 42.65,
+        "profit_factor": 1.524,
+        "sharpe": 0.34,
+        "calmar": 0.092,
+        "avg_trade_pct": 1.029
+      }
+    },
+    {
+      "strategy": "ATR Trend (Keltner-style)",
+      "params": {
+        "ema_n": 20,
+        "atr_n": 10,
+        "mult": 1.5
+      },
+      "score_test": 0.745,
+      "test": {
+        "n_trades": 15,
+        "total_return_pct": 90.34,
+        "cagr_pct": 18.99,
+        "max_drawdown_pct": -18.91,
+        "win_rate_pct": 40.0,
+        "profit_factor": 3.531,
+        "sharpe": 0.988,
+        "calmar": 1.004,
+        "avg_trade_pct": 5.915
+      },
+      "full": {
+        "n_trades": 58,
+        "total_return_pct": 45.99,
+        "cagr_pct": 3.11,
+        "max_drawdown_pct": -42.32,
+        "win_rate_pct": 37.93,
+        "profit_factor": 1.505,
+        "sharpe": 0.273,
+        "calmar": 0.074,
+        "avg_trade_pct": 1.167
+      }
+    },
+    {
+      "strategy": "ATR Trend (Keltner-style)",
+      "params": {
+        "ema_n": 20,
+        "atr_n": 14,
+        "mult": 1.5
+      },
+      "score_test": 0.738,
+      "test": {
+        "n_trades": 15,
+        "total_return_pct": 89.21,
+        "cagr_pct": 18.8,
+        "max_drawdown_pct": -18.91,
+        "win_rate_pct": 40.0,
+        "profit_factor": 3.473,
+        "sharpe": 0.979,
+        "calmar": 0.994,
+        "avg_trade_pct": 5.876
+      },
+      "full": {
+        "n_trades": 60,
+        "total_return_pct": 27.05,
+        "cagr_pct": 1.96,
+        "max_drawdown_pct": -47.05,
+        "win_rate_pct": 35.0,
+        "profit_factor": 1.379,
+        "sharpe": 0.202,
+        "calmar": 0.042,
+        "avg_trade_pct": 0.898
+      }
+    },
+    {
+      "strategy": "Bollinger Breakout",
+      "params": {
+        "n": 30,
+        "k": 1.5
+      },
+      "score_test": 0.715,
+      "test": {
+        "n_trades": 15,
+        "total_return_pct": 85.25,
+        "cagr_pct": 18.12,
+        "max_drawdown_pct": -18.87,
+        "win_rate_pct": 46.67,
+        "profit_factor": 3.357,
+        "sharpe": 0.95,
+        "calmar": 0.96,
+        "avg_trade_pct": 4.953
+      },
+      "full": {
+        "n_trades": 62,
+        "total_return_pct": 58.41,
+        "cagr_pct": 3.8,
+        "max_drawdown_pct": -34.28,
+        "win_rate_pct": 40.32,
+        "profit_factor": 1.5,
+        "sharpe": 0.315,
+        "calmar": 0.111,
+        "avg_trade_pct": 1.036
+      }
+    },
+    {
+      "strategy": "SMA Crossover",
+      "params": {
+        "fast": 5,
+        "slow": 50
+      },
+      "score_test": 0.604,
+      "test": {
+        "n_trades": 29,
+        "total_return_pct": 66.42,
+        "cagr_pct": 14.75,
+        "max_drawdown_pct": -18.12,
+        "win_rate_pct": 31.03,
+        "profit_factor": 2.641,
+        "sharpe": 0.802,
+        "calmar": 0.814,
+        "avg_trade_pct": 2.107
+      },
+      "full": {
+        "n_trades": 106,
+        "total_return_pct": 88.27,
+        "cagr_pct": 5.26,
+        "max_drawdown_pct": -23.96,
+        "win_rate_pct": 30.19,
+        "profit_factor": 1.64,
+        "sharpe": 0.405,
+        "calmar": 0.22,
+        "avg_trade_pct": 0.741
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 5,
+        "slow": 50
+      },
+      "score_test": 0.599,
+      "test": {
+        "n_trades": 25,
+        "total_return_pct": 69.23,
+        "cagr_pct": 15.27,
+        "max_drawdown_pct": -20.44,
+        "win_rate_pct": 28.0,
+        "profit_factor": 2.655,
+        "sharpe": 0.825,
+        "calmar": 0.747,
+        "avg_trade_pct": 2.603
+      },
+      "full": {
+        "n_trades": 122,
+        "total_return_pct": 27.92,
+        "cagr_pct": 2.02,
+        "max_drawdown_pct": -44.65,
+        "win_rate_pct": 22.95,
+        "profit_factor": 1.262,
+        "sharpe": 0.206,
+        "calmar": 0.045,
+        "avg_trade_pct": 0.347
+      }
+    },
+    {
+      "strategy": "Bollinger Breakout",
+      "params": {
+        "n": 20,
+        "k": 2.0
+      },
+      "score_test": 0.57,
+      "test": {
+        "n_trades": 15,
+        "total_return_pct": 69.62,
+        "cagr_pct": 15.34,
+        "max_drawdown_pct": -24.63,
+        "win_rate_pct": 40.0,
+        "profit_factor": 2.81,
+        "sharpe": 0.828,
+        "calmar": 0.623,
+        "avg_trade_pct": 4.354
+      },
+      "full": {
+        "n_trades": 60,
+        "total_return_pct": 3.35,
+        "cagr_pct": 0.27,
+        "max_drawdown_pct": -50.02,
+        "win_rate_pct": 35.0,
+        "profit_factor": 1.144,
+        "sharpe": 0.096,
+        "calmar": 0.005,
+        "avg_trade_pct": 0.375
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 12,
+        "slow": 26
+      },
+      "score_test": 0.554,
+      "test": {
+        "n_trades": 31,
+        "total_return_pct": 62.13,
+        "cagr_pct": 13.94,
+        "max_drawdown_pct": -20.31,
+        "win_rate_pct": 32.26,
+        "profit_factor": 2.294,
+        "sharpe": 0.766,
+        "calmar": 0.686,
+        "avg_trade_pct": 1.901
+      },
+      "full": {
+        "n_trades": 104,
+        "total_return_pct": 42.12,
+        "cagr_pct": 2.89,
+        "max_drawdown_pct": -31.22,
+        "win_rate_pct": 31.73,
+        "profit_factor": 1.336,
+        "sharpe": 0.26,
+        "calmar": 0.093,
+        "avg_trade_pct": 0.493
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 12,
+        "slow": 50
+      },
+      "score_test": 0.542,
+      "test": {
+        "n_trades": 15,
+        "total_return_pct": 66.6,
+        "cagr_pct": 14.78,
+        "max_drawdown_pct": -26.39,
+        "win_rate_pct": 33.33,
+        "profit_factor": 3.5,
+        "sharpe": 0.803,
+        "calmar": 0.56,
+        "avg_trade_pct": 4.669
+      },
+      "full": {
+        "n_trades": 70,
+        "total_return_pct": 51.95,
+        "cagr_pct": 3.45,
+        "max_drawdown_pct": -30.04,
+        "win_rate_pct": 28.57,
+        "profit_factor": 1.585,
+        "sharpe": 0.294,
+        "calmar": 0.115,
+        "avg_trade_pct": 0.929
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 8,
+        "slow": 50
+      },
+      "score_test": 0.538,
+      "test": {
+        "n_trades": 15,
+        "total_return_pct": 63.17,
+        "cagr_pct": 14.14,
+        "max_drawdown_pct": -23.35,
+        "win_rate_pct": 33.33,
+        "profit_factor": 3.232,
+        "sharpe": 0.774,
+        "calmar": 0.606,
+        "avg_trade_pct": 4.599
+      },
+      "full": {
+        "n_trades": 90,
+        "total_return_pct": 42.48,
+        "cagr_pct": 2.91,
+        "max_drawdown_pct": -31.21,
+        "win_rate_pct": 26.67,
+        "profit_factor": 1.468,
+        "sharpe": 0.261,
+        "calmar": 0.093,
+        "avg_trade_pct": 0.665
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 8,
+        "slow": 26
+      },
+      "score_test": 0.536,
+      "test": {
+        "n_trades": 39,
+        "total_return_pct": 57.76,
+        "cagr_pct": 13.1,
+        "max_drawdown_pct": -19.09,
+        "win_rate_pct": 20.51,
+        "profit_factor": 2.078,
+        "sharpe": 0.728,
+        "calmar": 0.686,
+        "avg_trade_pct": 1.484
+      },
+      "full": {
+        "n_trades": 134,
+        "total_return_pct": 40.19,
+        "cagr_pct": 2.77,
+        "max_drawdown_pct": -25.39,
+        "win_rate_pct": 26.12,
+        "profit_factor": 1.297,
+        "sharpe": 0.253,
+        "calmar": 0.109,
+        "avg_trade_pct": 0.381
+      }
+    },
+    {
+      "strategy": "Donchian Breakout",
+      "params": {
+        "n": 20
+      },
+      "score_test": 0.468,
+      "test": {
+        "n_trades": 19,
+        "total_return_pct": 51.36,
+        "cagr_pct": 11.85,
+        "max_drawdown_pct": -22.19,
+        "win_rate_pct": 42.11,
+        "profit_factor": 2.136,
+        "sharpe": 0.67,
+        "calmar": 0.534,
+        "avg_trade_pct": 2.741
+      },
+      "full": {
+        "n_trades": 72,
+        "total_return_pct": 14.65,
+        "cagr_pct": 1.11,
+        "max_drawdown_pct": -39.52,
+        "win_rate_pct": 40.28,
+        "profit_factor": 1.194,
+        "sharpe": 0.149,
+        "calmar": 0.028,
+        "avg_trade_pct": 0.408
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 5,
+        "slow": 26
+      },
+      "score_test": 0.36,
+      "test": {
+        "n_trades": 47,
+        "total_return_pct": 35.33,
+        "cagr_pct": 8.52,
+        "max_drawdown_pct": -20.83,
+        "win_rate_pct": 25.53,
+        "profit_factor": 1.55,
+        "sharpe": 0.515,
+        "calmar": 0.409,
+        "avg_trade_pct": 0.815
+      },
+      "full": {
+        "n_trades": 160,
+        "total_return_pct": 10.78,
+        "cagr_pct": 0.83,
+        "max_drawdown_pct": -32.8,
+        "win_rate_pct": 25.62,
+        "profit_factor": 1.114,
+        "sharpe": 0.132,
+        "calmar": 0.025,
+        "avg_trade_pct": 0.153
+      }
+    },
+    {
+      "strategy": "SMA Crossover",
+      "params": {
+        "fast": 10,
+        "slow": 50
+      },
+      "score_test": 0.357,
+      "test": {
+        "n_trades": 23,
+        "total_return_pct": 37.54,
+        "cagr_pct": 8.99,
+        "max_drawdown_pct": -25.48,
+        "win_rate_pct": 34.78,
+        "profit_factor": 2.004,
+        "sharpe": 0.538,
+        "calmar": 0.353,
+        "avg_trade_pct": 1.765
+      },
+      "full": {
+        "n_trades": 74,
+        "total_return_pct": 26.95,
+        "cagr_pct": 1.95,
+        "max_drawdown_pct": -35.71,
+        "win_rate_pct": 32.43,
+        "profit_factor": 1.297,
+        "sharpe": 0.202,
+        "calmar": 0.055,
+        "avg_trade_pct": 0.508
+      }
+    },
+    {
+      "strategy": "EMA Crossover",
+      "params": {
+        "fast": 20,
+        "slow": 26
+      },
+      "score_test": 0.324,
+      "test": {
+        "n_trades": 23,
+        "total_return_pct": 32.07,
+        "cagr_pct": 7.8,
+        "max_drawdown_pct": -23.35,
+        "win_rate_pct": 30.43,
+        "profit_factor": 1.831,
+        "sharpe": 0.482,
+        "calmar": 0.334,
+        "avg_trade_pct": 1.586
+      },
+      "full": {
+        "n_trades": 84,
+        "total_return_pct": 1.75,
+        "cagr_pct": 0.14,
+        "max_drawdown_pct": -40.58,
+        "win_rate_pct": 26.19,
+        "profit_factor": 1.105,
+        "sharpe": 0.088,
+        "calmar": 0.003,
+        "avg_trade_pct": 0.186
+      }
+    }
+  ],
+  "best_strategy": {
+    "strategy": "Bollinger Breakout",
+    "params": {
+      "n": 14,
+      "k": 2.0
+    },
+    "test": {
+      "n_trades": 19,
+      "total_return_pct": 87.99,
+      "cagr_pct": 18.59,
+      "max_drawdown_pct": -17.74,
+      "win_rate_pct": 36.84,
+      "profit_factor": 3.168,
+      "sharpe": 0.971,
+      "calmar": 1.048,
+      "avg_trade_pct": 4.035
+    },
+    "full": {
+      "n_trades": 68,
+      "total_return_pct": 66.05,
+      "cagr_pct": 4.19,
+      "max_drawdown_pct": -45.43,
+      "win_rate_pct": 42.65,
+      "profit_factor": 1.524,
+      "sharpe": 0.34,
+      "calmar": 0.092,
+      "avg_trade_pct": 1.029
+    },
+    "equity_curve": [
+      {
+        "date": "2014-08-20",
+        "equity": 1.0
+      },
+      {
+        "date": "2014-09-03",
+        "equity": 1.0
+      },
+      {
+        "date": "2014-09-17",
+        "equity": 1.0
+      },
+      {
+        "date": "2014-10-01",
+        "equity": 1.0
+      },
+      {
+        "date": "2014-10-15",
+        "equity": 0.96052
+      },
+      {
+        "date": "2014-10-29",
+        "equity": 0.99222
+      },
+      {
+        "date": "2014-11-12",
+        "equity": 1.02049
+      },
+      {
+        "date": "2014-11-26",
+        "equity": 0.99529
+      },
+      {
+        "date": "2014-12-10",
+        "equity": 0.95653
+      },
+      {
+        "date": "2014-12-25",
+        "equity": 0.93212
+      },
+      {
+        "date": "2015-01-11",
+        "equity": 0.96102
+      },
+      {
+        "date": "2015-01-25",
+        "equity": 0.99818
+      },
+      {
+        "date": "2015-02-08",
+        "equity": 0.95708
+      },
+      {
+        "date": "2015-02-22",
+        "equity": 0.98616
+      },
+      {
+        "date": "2015-03-08",
+        "equity": 1.01464
+      },
+      {
+        "date": "2015-03-22",
+        "equity": 0.99521
+      },
+      {
+        "date": "2015-04-05",
+        "equity": 0.97385
+      },
+      {
+        "date": "2015-04-19",
+        "equity": 0.98891
+      },
+      {
+        "date": "2015-05-03",
+        "equity": 0.99384
+      },
+      {
+        "date": "2015-05-17",
+        "equity": 0.96329
+      },
+      {
+        "date": "2015-05-31",
+        "equity": 0.99214
+      },
+      {
+        "date": "2015-06-14",
+        "equity": 0.99437
+      },
+      {
+        "date": "2015-06-28",
+        "equity": 0.9623
+      },
+      {
+        "date": "2015-07-12",
+        "equity": 0.94451
+      },
+      {
+        "date": "2015-07-26",
+        "equity": 0.95729
+      },
+      {
+        "date": "2015-08-09",
+        "equity": 0.94796
+      },
+      {
+        "date": "2015-08-23",
+        "equity": 0.99033
+      },
+      {
+        "date": "2015-09-06",
+        "equity": 0.95959
+      },
+      {
+        "date": "2015-09-20",
+        "equity": 0.97178
+      },
+      {
+        "date": "2015-10-04",
+        "equity": 0.97369
+      },
+      {
+        "date": "2015-10-18",
+        "equity": 1.00386
+      },
+      {
+        "date": "2015-11-01",
+        "equity": 0.99264
+      },
+      {
+        "date": "2015-11-15",
+        "equity": 1.03871
+      },
+      {
+        "date": "2015-11-29",
+        "equity": 1.05553
+      },
+      {
+        "date": "2015-12-13",
+        "equity": 1.05877
+      },
+      {
+        "date": "2015-12-28",
+        "equity": 1.04919
+      },
+      {
+        "date": "2016-01-11",
+        "equity": 1.01804
+      },
+      {
+        "date": "2016-01-25",
+        "equity": 1.04899
+      },
+      {
+        "date": "2016-02-08",
+        "equity": 1.11359
+      },
+      {
+        "date": "2016-02-22",
+        "equity": 1.14928
+      },
+      {
+        "date": "2016-03-07",
+        "equity": 1.18157
+      },
+      {
+        "date": "2016-03-21",
+        "equity": 1.16909
+      },
+      {
+        "date": "2016-04-05",
+        "equity": 1.13911
+      },
+      {
+        "date": "2016-04-19",
+        "equity": 1.09392
+      },
+      {
+        "date": "2016-05-03",
+        "equity": 1.12485
+      },
+      {
+        "date": "2016-05-17",
+        "equity": 1.10663
+      },
+      {
+        "date": "2016-05-31",
+        "equity": 1.09046
+      },
+      {
+        "date": "2016-06-14",
+        "equity": 1.02282
+      },
+      {
+        "date": "2016-06-28",
+        "equity": 1.00267
+      },
+      {
+        "date": "2016-07-12",
+        "equity": 1.02009
+      },
+      {
+        "date": "2016-07-26",
+        "equity": 1.01846
+      },
+      {
+        "date": "2016-08-09",
+        "equity": 1.02333
+      },
+      {
+        "date": "2016-08-23",
+        "equity": 1.00635
+      },
+      {
+        "date": "2016-09-06",
+        "equity": 0.98923
+      },
+      {
+        "date": "2016-09-20",
+        "equity": 0.99589
+      },
+      {
+        "date": "2016-10-04",
+        "equity": 1.04868
+      },
+      {
+        "date": "2016-10-18",
+        "equity": 1.04612
+      },
+      {
+        "date": "2016-11-01",
+        "equity": 1.0361
+      },
+      {
+        "date": "2016-11-15",
+        "equity": 0.98269
+      },
+      {
+        "date": "2016-11-29",
+        "equity": 1.02512
+      },
+      {
+        "date": "2016-12-13",
+        "equity": 1.05159
+      },
+      {
+        "date": "2016-12-28",
+        "equity": 1.03779
+      },
+      {
+        "date": "2017-01-12",
+        "equity": 1.03128
+      },
+      {
+        "date": "2017-01-26",
+        "equity": 1.02585
+      },
+      {
+        "date": "2017-02-09",
+        "equity": 1.0626
+      },
+      {
+        "date": "2017-02-23",
+        "equity": 1.08291
+      },
+      {
+        "date": "2017-03-09",
+        "equity": 1.0556
+      },
+      {
+        "date": "2017-03-23",
+        "equity": 1.02221
+      },
+      {
+        "date": "2017-04-06",
+        "equity": 1.01305
+      },
+      {
+        "date": "2017-04-23",
+        "equity": 0.99667
+      },
+      {
+        "date": "2017-05-07",
+        "equity": 0.9753
+      },
+      {
+        "date": "2017-05-21",
+        "equity": 0.94807
+      },
+      {
+        "date": "2017-06-04",
+        "equity": 0.93362
+      },
+      {
+        "date": "2017-06-18",
+        "equity": 0.8861
+      },
+      {
+        "date": "2017-07-02",
+        "equity": 0.86942
+      },
+      {
+        "date": "2017-07-16",
+        "equity": 0.85867
+      },
+      {
+        "date": "2017-07-30",
+        "equity": 0.85315
+      },
+      {
+        "date": "2017-08-13",
+        "equity": 0.86144
+      },
+      {
+        "date": "2017-08-27",
+        "equity": 0.88036
+      },
+      {
+        "date": "2017-09-10",
+        "equity": 0.89233
+      },
+      {
+        "date": "2017-09-24",
+        "equity": 0.88071
+      },
+      {
+        "date": "2017-10-08",
+        "equity": 0.86287
+      },
+      {
+        "date": "2017-10-22",
+        "equity": 0.86157
+      },
+      {
+        "date": "2017-11-05",
+        "equity": 0.86146
+      },
+      {
+        "date": "2017-11-19",
+        "equity": 0.85813
+      },
+      {
+        "date": "2017-12-03",
+        "equity": 0.85756
+      },
+      {
+        "date": "2017-12-17",
+        "equity": 0.82725
+      },
+      {
+        "date": "2018-01-02",
+        "equity": 0.8323
+      },
+      {
+        "date": "2018-01-16",
+        "equity": 0.84132
+      },
+      {
+        "date": "2018-01-30",
+        "equity": 0.85254
+      },
+      {
+        "date": "2018-02-13",
+        "equity": 0.85609
+      },
+      {
+        "date": "2018-02-27",
+        "equity": 0.83563
+      },
+      {
+        "date": "2018-03-13",
+        "equity": 0.83987
+      },
+      {
+        "date": "2018-03-27",
+        "equity": 0.83985
+      },
+      {
+        "date": "2018-04-11",
+        "equity": 0.84622
+      },
+      {
+        "date": "2018-04-25",
+        "equity": 0.83478
+      },
+      {
+        "date": "2018-05-09",
+        "equity": 0.83749
+      },
+      {
+        "date": "2018-05-23",
+        "equity": 0.80868
+      },
+      {
+        "date": "2018-06-06",
+        "equity": 0.81357
+      },
+      {
+        "date": "2018-06-20",
+        "equity": 0.83241
+      },
+      {
+        "date": "2018-07-04",
+        "equity": 0.83858
+      },
+      {
+        "date": "2018-07-18",
+        "equity": 0.86183
+      },
+      {
+        "date": "2018-08-01",
+        "equity": 0.87251
+      },
+      {
+        "date": "2018-08-15",
+        "equity": 0.89703
+      },
+      {
+        "date": "2018-08-29",
+        "equity": 0.87717
+      },
+      {
+        "date": "2018-09-12",
+        "equity": 0.87597
+      },
+      {
+        "date": "2018-09-26",
+        "equity": 0.8895
+      },
+      {
+        "date": "2018-10-10",
+        "equity": 0.85857
+      },
+      {
+        "date": "2018-10-24",
+        "equity": 0.86323
+      },
+      {
+        "date": "2018-11-07",
+        "equity": 0.85717
+      },
+      {
+        "date": "2018-11-21",
+        "equity": 0.83445
+      },
+      {
+        "date": "2018-12-05",
+        "equity": 0.82549
+      },
+      {
+        "date": "2018-12-19",
+        "equity": 0.84018
+      },
+      {
+        "date": "2019-01-03",
+        "equity": 0.85698
+      },
+      {
+        "date": "2019-01-17",
+        "equity": 0.85468
+      },
+      {
+        "date": "2019-01-31",
+        "equity": 0.87875
+      },
+      {
+        "date": "2019-02-14",
+        "equity": 0.88093
+      },
+      {
+        "date": "2019-02-28",
+        "equity": 0.86243
+      },
+      {
+        "date": "2019-03-14",
+        "equity": 0.85524
+      },
+      {
+        "date": "2019-03-28",
+        "equity": 0.86157
+      },
+      {
+        "date": "2019-04-11",
+        "equity": 0.86283
+      },
+      {
+        "date": "2019-04-28",
+        "equity": 0.86959
+      },
+      {
+        "date": "2019-05-12",
+        "equity": 0.85619
+      },
+      {
+        "date": "2019-05-26",
+        "equity": 0.84579
+      },
+      {
+        "date": "2019-06-09",
+        "equity": 0.87396
+      },
+      {
+        "date": "2019-06-23",
+        "equity": 0.93428
+      },
+      {
+        "date": "2019-07-07",
+        "equity": 0.91823
+      },
+      {
+        "date": "2019-07-21",
+        "equity": 0.93765
+      },
+      {
+        "date": "2019-08-04",
+        "equity": 0.96338
+      },
+      {
+        "date": "2019-08-18",
+        "equity": 0.98448
+      },
+      {
+        "date": "2019-09-01",
+        "equity": 1.00636
+      },
+      {
+        "date": "2019-09-15",
+        "equity": 0.9862
+      },
+      {
+        "date": "2019-09-29",
+        "equity": 0.96906
+      },
+      {
+        "date": "2019-10-13",
+        "equity": 0.95421
+      },
+      {
+        "date": "2019-10-27",
+        "equity": 0.95434
+      },
+      {
+        "date": "2019-11-10",
+        "equity": 0.92029
+      },
+      {
+        "date": "2019-11-24",
+        "equity": 0.92066
+      },
+      {
+        "date": "2019-12-08",
+        "equity": 0.91643
+      },
+      {
+        "date": "2019-12-22",
+        "equity": 0.90151
+      },
+      {
+        "date": "2020-01-07",
+        "equity": 0.92613
+      },
+      {
+        "date": "2020-01-21",
+        "equity": 0.92764
+      },
+      {
+        "date": "2020-02-04",
+        "equity": 0.926
+      },
+      {
+        "date": "2020-02-18",
+        "equity": 0.95901
+      },
+      {
+        "date": "2020-03-03",
+        "equity": 0.97406
+      },
+      {
+        "date": "2020-03-17",
+        "equity": 0.93475
+      },
+      {
+        "date": "2020-03-31",
+        "equity": 0.86867
+      },
+      {
+        "date": "2020-04-15",
+        "equity": 0.80685
+      },
+      {
+        "date": "2020-04-29",
+        "equity": 0.79195
+      },
+      {
+        "date": "2020-05-13",
+        "equity": 0.81269
+      },
+      {
+        "date": "2020-05-27",
+        "equity": 0.80706
+      },
+      {
+        "date": "2020-06-10",
+        "equity": 0.78247
+      },
+      {
+        "date": "2020-06-24",
+        "equity": 0.76607
+      },
+      {
+        "date": "2020-07-08",
+        "equity": 0.74365
+      },
+      {
+        "date": "2020-07-22",
+        "equity": 0.77836
+      },
+      {
+        "date": "2020-08-05",
+        "equity": 0.85084
+      },
+      {
+        "date": "2020-08-19",
+        "equity": 0.80286
+      },
+      {
+        "date": "2020-09-02",
+        "equity": 0.79614
+      },
+      {
+        "date": "2020-09-16",
+        "equity": 0.80175
+      },
+      {
+        "date": "2020-09-30",
+        "equity": 0.79004
+      },
+      {
+        "date": "2020-10-14",
+        "equity": 0.76965
+      },
+      {
+        "date": "2020-10-28",
+        "equity": 0.76013
+      },
+      {
+        "date": "2020-11-11",
+        "equity": 0.6999
+      },
+      {
+        "date": "2020-11-25",
+        "equity": 0.6751
+      },
+      {
+        "date": "2020-12-09",
+        "equity": 0.68487
+      },
+      {
+        "date": "2020-12-23",
+        "equity": 0.70086
+      },
+      {
+        "date": "2021-01-10",
+        "equity": 0.68745
+      },
+      {
+        "date": "2021-01-24",
+        "equity": 0.69207
+      },
+      {
+        "date": "2021-02-07",
+        "equity": 0.65472
+      },
+      {
+        "date": "2021-02-21",
+        "equity": 0.66184
+      },
+      {
+        "date": "2021-03-07",
+        "equity": 0.71059
+      },
+      {
+        "date": "2021-03-21",
+        "equity": 0.68756
+      },
+      {
+        "date": "2021-04-05",
+        "equity": 0.68511
+      },
+      {
+        "date": "2021-04-19",
+        "equity": 0.67111
+      },
+      {
+        "date": "2021-05-03",
+        "equity": 0.67084
+      },
+      {
+        "date": "2021-05-17",
+        "equity": 0.67631
+      },
+      {
+        "date": "2021-05-31",
+        "equity": 0.68743
+      },
+      {
+        "date": "2021-06-14",
+        "equity": 0.67707
+      },
+      {
+        "date": "2021-06-28",
+        "equity": 0.71368
+      },
+      {
+        "date": "2021-07-12",
+        "equity": 0.6952
+      },
+      {
+        "date": "2021-07-26",
+        "equity": 0.69839
+      },
+      {
+        "date": "2021-08-09",
+        "equity": 0.7258
+      },
+      {
+        "date": "2021-08-23",
+        "equity": 0.69559
+      },
+      {
+        "date": "2021-09-06",
+        "equity": 0.69854
+      },
+      {
+        "date": "2021-09-20",
+        "equity": 0.70592
+      },
+      {
+        "date": "2021-10-04",
+        "equity": 0.71118
+      },
+      {
+        "date": "2021-10-18",
+        "equity": 0.68796
+      },
+      {
+        "date": "2021-11-01",
+        "equity": 0.69513
+      },
+      {
+        "date": "2021-11-15",
+        "equity": 0.71952
+      },
+      {
+        "date": "2021-11-29",
+        "equity": 0.68995
+      },
+      {
+        "date": "2021-12-13",
+        "equity": 0.68833
+      },
+      {
+        "date": "2021-12-28",
+        "equity": 0.7014
+      },
+      {
+        "date": "2022-01-11",
+        "equity": 0.71
+      },
+      {
+        "date": "2022-01-25",
+        "equity": 0.70733
+      },
+      {
+        "date": "2022-02-08",
+        "equity": 0.7127
+      },
+      {
+        "date": "2022-02-22",
+        "equity": 0.7422
+      },
+      {
+        "date": "2022-03-08",
+        "equity": 0.77463
+      },
+      {
+        "date": "2022-03-22",
+        "equity": 0.75602
+      },
+      {
+        "date": "2022-04-05",
+        "equity": 0.74873
+      },
+      {
+        "date": "2022-04-20",
+        "equity": 0.75874
+      },
+      {
+        "date": "2022-05-04",
+        "equity": 0.74497
+      },
+      {
+        "date": "2022-05-18",
+        "equity": 0.75838
+      },
+      {
+        "date": "2022-06-01",
+        "equity": 0.74735
+      },
+      {
+        "date": "2022-06-15",
+        "equity": 0.751
+      },
+      {
+        "date": "2022-06-29",
+        "equity": 0.7714
+      },
+      {
+        "date": "2022-07-13",
+        "equity": 0.81442
+      },
+      {
+        "date": "2022-07-27",
+        "equity": 0.79261
+      },
+      {
+        "date": "2022-08-10",
+        "equity": 0.80688
+      },
+      {
+        "date": "2022-08-24",
+        "equity": 0.77183
+      },
+      {
+        "date": "2022-09-07",
+        "equity": 0.79384
+      },
+      {
+        "date": "2022-09-21",
+        "equity": 0.81103
+      },
+      {
+        "date": "2022-10-05",
+        "equity": 0.77687
+      },
+      {
+        "date": "2022-10-19",
+        "equity": 0.73853
+      },
+      {
+        "date": "2022-11-02",
+        "equity": 0.73914
+      },
+      {
+        "date": "2022-11-16",
+        "equity": 0.79856
+      },
+      {
+        "date": "2022-11-30",
+        "equity": 0.81783
+      },
+      {
+        "date": "2022-12-14",
+        "equity": 0.80596
+      },
+      {
+        "date": "2022-12-29",
+        "equity": 0.82724
+      },
+      {
+        "date": "2023-01-15",
+        "equity": 0.86907
+      },
+      {
+        "date": "2023-01-29",
+        "equity": 0.87233
+      },
+      {
+        "date": "2023-02-12",
+        "equity": 0.85076
+      },
+      {
+        "date": "2023-02-26",
+        "equity": 0.86766
+      },
+      {
+        "date": "2023-03-12",
+        "equity": 0.86389
+      },
+      {
+        "date": "2023-03-26",
+        "equity": 0.88322
+      },
+      {
+        "date": "2023-04-10",
+        "equity": 0.90452
+      },
+      {
+        "date": "2023-04-24",
+        "equity": 0.90154
+      },
+      {
+        "date": "2023-05-08",
+        "equity": 0.91847
+      },
+      {
+        "date": "2023-05-22",
+        "equity": 0.87499
+      },
+      {
+        "date": "2023-06-05",
+        "equity": 0.87976
+      },
+      {
+        "date": "2023-06-19",
+        "equity": 0.89158
+      },
+      {
+        "date": "2023-07-03",
+        "equity": 0.89622
+      },
+      {
+        "date": "2023-07-17",
+        "equity": 0.89021
+      },
+      {
+        "date": "2023-07-31",
+        "equity": 0.87459
+      },
+      {
+        "date": "2023-08-14",
+        "equity": 0.85553
+      },
+      {
+        "date": "2023-08-28",
+        "equity": 0.87155
+      },
+      {
+        "date": "2023-09-11",
+        "equity": 0.86075
+      },
+      {
+        "date": "2023-09-25",
+        "equity": 0.85501
+      },
+      {
+        "date": "2023-10-09",
+        "equity": 0.872
+      },
+      {
+        "date": "2023-10-23",
+        "equity": 0.85445
+      },
+      {
+        "date": "2023-11-06",
+        "equity": 0.8537
+      },
+      {
+        "date": "2023-11-20",
+        "equity": 0.82384
+      },
+      {
+        "date": "2023-12-04",
+        "equity": 0.79716
+      },
+      {
+        "date": "2023-12-18",
+        "equity": 0.80541
+      },
+      {
+        "date": "2024-01-03",
+        "equity": 0.80667
+      },
+      {
+        "date": "2024-01-17",
+        "equity": 0.78465
+      },
+      {
+        "date": "2024-01-31",
+        "equity": 0.77233
+      },
+      {
+        "date": "2024-02-14",
+        "equity": 0.79146
+      },
+      {
+        "date": "2024-02-28",
+        "equity": 0.77594
+      },
+      {
+        "date": "2024-03-13",
+        "equity": 0.7896
+      },
+      {
+        "date": "2024-03-27",
+        "equity": 0.81553
+      },
+      {
+        "date": "2024-04-11",
+        "equity": 0.8561
+      },
+      {
+        "date": "2024-04-25",
+        "equity": 0.85385
+      },
+      {
+        "date": "2024-05-09",
+        "equity": 0.86205
+      },
+      {
+        "date": "2024-05-23",
+        "equity": 0.85237
+      },
+      {
+        "date": "2024-06-06",
+        "equity": 0.83776
+      },
+      {
+        "date": "2024-06-20",
+        "equity": 0.84794
+      },
+      {
+        "date": "2024-07-04",
+        "equity": 0.87341
+      },
+      {
+        "date": "2024-07-18",
+        "equity": 0.87677
+      },
+      {
+        "date": "2024-08-01",
+        "equity": 0.89199
+      },
+      {
+        "date": "2024-08-15",
+        "equity": 0.91596
+      },
+      {
+        "date": "2024-08-29",
+        "equity": 0.91423
+      },
+      {
+        "date": "2024-09-12",
+        "equity": 0.94174
+      },
+      {
+        "date": "2024-09-26",
+        "equity": 0.97089
+      },
+      {
+        "date": "2024-10-10",
+        "equity": 0.97039
+      },
+      {
+        "date": "2024-10-24",
+        "equity": 1.00327
+      },
+      {
+        "date": "2024-11-07",
+        "equity": 0.96062
+      },
+      {
+        "date": "2024-11-21",
+        "equity": 0.94784
+      },
+      {
+        "date": "2024-12-05",
+        "equity": 0.97652
+      },
+      {
+        "date": "2024-12-19",
+        "equity": 0.88461
+      },
+      {
+        "date": "2025-01-06",
+        "equity": 0.87589
+      },
+      {
+        "date": "2025-01-20",
+        "equity": 0.87945
+      },
+      {
+        "date": "2025-02-03",
+        "equity": 0.91067
+      },
+      {
+        "date": "2025-02-17",
+        "equity": 0.94052
+      },
+      {
+        "date": "2025-03-03",
+        "equity": 0.93488
+      },
+      {
+        "date": "2025-03-17",
+        "equity": 0.97213
+      },
+      {
+        "date": "2025-03-31",
+        "equity": 0.99788
+      },
+      {
+        "date": "2025-04-14",
+        "equity": 1.03483
+      },
+      {
+        "date": "2025-04-29",
+        "equity": 1.05353
+      },
+      {
+        "date": "2025-05-13",
+        "equity": 1.0181
+      },
+      {
+        "date": "2025-05-27",
+        "equity": 1.05371
+      },
+      {
+        "date": "2025-06-10",
+        "equity": 1.07502
+      },
+      {
+        "date": "2025-06-24",
+        "equity": 1.0677
+      },
+      {
+        "date": "2025-07-08",
+        "equity": 1.03503
+      },
+      {
+        "date": "2025-07-22",
+        "equity": 1.00537
+      },
+      {
+        "date": "2025-08-05",
+        "equity": 0.99998
+      },
+      {
+        "date": "2025-08-19",
+        "equity": 0.99381
+      },
+      {
+        "date": "2025-09-02",
+        "equity": 1.05636
+      },
+      {
+        "date": "2025-09-16",
+        "equity": 1.08626
+      },
+      {
+        "date": "2025-09-30",
+        "equity": 1.14726
+      },
+      {
+        "date": "2025-10-14",
+        "equity": 1.24884
+      },
+      {
+        "date": "2025-10-28",
+        "equity": 1.16658
+      },
+      {
+        "date": "2025-11-11",
+        "equity": 1.24511
+      },
+      {
+        "date": "2025-11-25",
+        "equity": 1.23572
+      },
+      {
+        "date": "2025-12-09",
+        "equity": 1.25507
+      },
+      {
+        "date": "2025-12-23",
+        "equity": 1.32946
+      },
+      {
+        "date": "2026-01-08",
+        "equity": 1.33844
+      },
+      {
+        "date": "2026-01-22",
+        "equity": 1.48027
+      },
+      {
+        "date": "2026-02-05",
+        "equity": 1.47347
+      },
+      {
+        "date": "2026-02-19",
+        "equity": 1.51609
+      },
+      {
+        "date": "2026-03-05",
+        "equity": 1.53487
+      },
+      {
+        "date": "2026-03-19",
+        "equity": 1.52713
+      },
+      {
+        "date": "2026-04-05",
+        "equity": 1.47094
+      },
+      {
+        "date": "2026-04-19",
+        "equity": 1.41774
+      },
+      {
+        "date": "2026-05-03",
+        "equity": 1.50789
+      },
+      {
+        "date": "2026-05-17",
+        "equity": 1.49149
+      },
+      {
+        "date": "2026-05-31",
+        "equity": 1.51643
+      },
+      {
+        "date": "2026-06-14",
+        "equity": 1.57021
+      },
+      {
+        "date": "2026-06-28",
+        "equity": 1.68032
+      },
+      {
+        "date": "2026-07-12",
+        "equity": 1.68365
+      },
+      {
+        "date": "2026-07-26",
+        "equity": 1.64995
+      },
+      {
+        "date": "2026-08-09",
+        "equity": 1.63151
+      },
+      {
+        "date": "2026-08-23",
+        "equity": 1.72851
+      },
+      {
+        "date": "2026-08-30",
+        "equity": 1.65344
+      }
+    ]
+  },
+  "live_signal": {
+    "position": 1,
+    "label": "MUA (Long)",
+    "as_of_date": "2026-09-03",
+    "as_of_close": 4468.205
+  },
+  "walk_forward": {
+    "log": [
+      {
+        "period_start": "2016-08-01",
+        "period_end": "2016-10-26",
+        "strategy": "Bollinger Mean Reversion",
+        "params": {
+          "n": 14,
+          "k": 2.5
+        },
+        "switched": false,
+        "selection_score": 0.733,
+        "realized_return_pct": -0.01,
+        "realized_sharpe": 0.009,
+        "realized_max_dd_pct": -1.37,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2016-10-27",
+        "period_end": "2017-01-25",
+        "strategy": "Bollinger Mean Reversion",
+        "params": {
+          "n": 14,
+          "k": 2.5
+        },
+        "switched": false,
+        "selection_score": 0.544,
+        "realized_return_pct": -5.78,
+        "realized_sharpe": -2.83,
+        "realized_max_dd_pct": -8.18,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2017-01-26",
+        "period_end": "2017-04-25",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 5,
+          "slow": 35,
+          "signal": 5
+        },
+        "switched": true,
+        "selection_score": 0.454,
+        "realized_return_pct": -2.26,
+        "realized_sharpe": -0.883,
+        "realized_max_dd_pct": -4.48,
+        "realized_trades": 13,
+        "realized_win_rate_pct": 38.46
+      },
+      {
+        "period_start": "2017-04-26",
+        "period_end": "2017-07-23",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": true,
+        "selection_score": 0.712,
+        "realized_return_pct": 2.59,
+        "realized_sharpe": 1.045,
+        "realized_max_dd_pct": -4.14,
+        "realized_trades": 4,
+        "realized_win_rate_pct": 75.0
+      },
+      {
+        "period_start": "2017-07-24",
+        "period_end": "2017-10-18",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": false,
+        "selection_score": 0.771,
+        "realized_return_pct": 7.89,
+        "realized_sharpe": 3.068,
+        "realized_max_dd_pct": -2.74,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2017-10-19",
+        "period_end": "2018-01-17",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": false,
+        "selection_score": 1.038,
+        "realized_return_pct": 3.94,
+        "realized_sharpe": 1.776,
+        "realized_max_dd_pct": -2.3,
+        "realized_trades": 4,
+        "realized_win_rate_pct": 50.0
+      },
+      {
+        "period_start": "2018-01-18",
+        "period_end": "2018-04-17",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": false,
+        "selection_score": 0.863,
+        "realized_return_pct": -1.3,
+        "realized_sharpe": -0.424,
+        "realized_max_dd_pct": -4.95,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 66.67
+      },
+      {
+        "period_start": "2018-04-18",
+        "period_end": "2018-07-15",
+        "strategy": "Momentum",
+        "params": {
+          "n": 5,
+          "threshold_pct": 0.02
+        },
+        "switched": true,
+        "selection_score": 0.921,
+        "realized_return_pct": -1.07,
+        "realized_sharpe": -3.47,
+        "realized_max_dd_pct": -1.07,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2018-07-16",
+        "period_end": "2018-10-10",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": true,
+        "selection_score": 1.195,
+        "realized_return_pct": 1.47,
+        "realized_sharpe": 0.585,
+        "realized_max_dd_pct": -3.5,
+        "realized_trades": 4,
+        "realized_win_rate_pct": 50.0
+      },
+      {
+        "period_start": "2018-10-11",
+        "period_end": "2019-01-08",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": false,
+        "selection_score": 1.331,
+        "realized_return_pct": 2.35,
+        "realized_sharpe": 1.173,
+        "realized_max_dd_pct": -3.75,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 33.33
+      },
+      {
+        "period_start": "2019-01-09",
+        "period_end": "2019-04-07",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": false,
+        "selection_score": 1.151,
+        "realized_return_pct": -8.34,
+        "realized_sharpe": -3.939,
+        "realized_max_dd_pct": -8.81,
+        "realized_trades": 8,
+        "realized_win_rate_pct": 25.0
+      },
+      {
+        "period_start": "2019-04-08",
+        "period_end": "2019-07-04",
+        "strategy": "Bollinger Mean Reversion",
+        "params": {
+          "n": 14,
+          "k": 2.5
+        },
+        "switched": true,
+        "selection_score": 0.614,
+        "realized_return_pct": -4.06,
+        "realized_sharpe": -1.675,
+        "realized_max_dd_pct": -7.12,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 50.0
+      },
+      {
+        "period_start": "2019-07-07",
+        "period_end": "2019-10-01",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": true,
+        "selection_score": 0.592,
+        "realized_return_pct": -7.81,
+        "realized_sharpe": -2.061,
+        "realized_max_dd_pct": -11.14,
+        "realized_trades": 8,
+        "realized_win_rate_pct": 37.5
+      },
+      {
+        "period_start": "2019-10-02",
+        "period_end": "2019-12-30",
+        "strategy": "ATR Trend (Keltner-style)",
+        "params": {
+          "ema_n": 50,
+          "atr_n": 10,
+          "mult": 1.5
+        },
+        "switched": true,
+        "selection_score": 0.846,
+        "realized_return_pct": -4.81,
+        "realized_sharpe": -2.239,
+        "realized_max_dd_pct": -6.37,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 33.33
+      },
+      {
+        "period_start": "2020-01-01",
+        "period_end": "2020-03-29",
+        "strategy": "Bollinger Breakout",
+        "params": {
+          "n": 30,
+          "k": 1.5
+        },
+        "switched": true,
+        "selection_score": 0.958,
+        "realized_return_pct": -6.34,
+        "realized_sharpe": -1.052,
+        "realized_max_dd_pct": -15.1,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2020-03-30",
+        "period_end": "2020-06-25",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 20,
+          "slow": 50
+        },
+        "switched": true,
+        "selection_score": 0.914,
+        "realized_return_pct": -6.67,
+        "realized_sharpe": -1.715,
+        "realized_max_dd_pct": -11.31,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 50.0
+      },
+      {
+        "period_start": "2020-06-28",
+        "period_end": "2020-09-22",
+        "strategy": "EMA Crossover",
+        "params": {
+          "fast": 12,
+          "slow": 100
+        },
+        "switched": true,
+        "selection_score": 0.798,
+        "realized_return_pct": 5.07,
+        "realized_sharpe": 1.081,
+        "realized_max_dd_pct": -9.69,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2020-09-23",
+        "period_end": "2020-12-20",
+        "strategy": "EMA Crossover",
+        "params": {
+          "fast": 12,
+          "slow": 100
+        },
+        "switched": false,
+        "selection_score": 0.891,
+        "realized_return_pct": -7.1,
+        "realized_sharpe": -1.623,
+        "realized_max_dd_pct": -11.44,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2020-12-21",
+        "period_end": "2021-03-21",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 5,
+          "slow": 200
+        },
+        "switched": true,
+        "selection_score": 0.611,
+        "realized_return_pct": 1.03,
+        "realized_sharpe": 0.337,
+        "realized_max_dd_pct": -9.59,
+        "realized_trades": 4,
+        "realized_win_rate_pct": 25.0
+      },
+      {
+        "period_start": "2021-03-22",
+        "period_end": "2021-06-17",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 5,
+          "slow": 200
+        },
+        "switched": false,
+        "selection_score": 0.544,
+        "realized_return_pct": -12.37,
+        "realized_sharpe": -3.881,
+        "realized_max_dd_pct": -14.79,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 33.33
+      },
+      {
+        "period_start": "2021-06-20",
+        "period_end": "2021-09-14",
+        "strategy": "Bollinger Mean Reversion",
+        "params": {
+          "n": 14,
+          "k": 2.0
+        },
+        "switched": true,
+        "selection_score": 0.414,
+        "realized_return_pct": 1.42,
+        "realized_sharpe": 0.912,
+        "realized_max_dd_pct": -2.03,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2021-09-15",
+        "period_end": "2021-12-12",
+        "strategy": "RSI Mean Reversion",
+        "params": {
+          "n": 14,
+          "low_th": 30,
+          "high_th": 70
+        },
+        "switched": true,
+        "selection_score": 0.572,
+        "realized_return_pct": 2.99,
+        "realized_sharpe": 2.27,
+        "realized_max_dd_pct": -0.9,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2021-12-13",
+        "period_end": "2022-03-10",
+        "strategy": "RSI Mean Reversion",
+        "params": {
+          "n": 14,
+          "low_th": 30,
+          "high_th": 70
+        },
+        "switched": false,
+        "selection_score": 0.714,
+        "realized_return_pct": -4.85,
+        "realized_sharpe": -1.864,
+        "realized_max_dd_pct": -8.0,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2022-03-13",
+        "period_end": "2022-06-08",
+        "strategy": "MACD Crossover",
+        "params": {
+          "fast": 19,
+          "slow": 39,
+          "signal": 9
+        },
+        "switched": true,
+        "selection_score": 0.772,
+        "realized_return_pct": 0.06,
+        "realized_sharpe": 0.083,
+        "realized_max_dd_pct": -4.99,
+        "realized_trades": 5,
+        "realized_win_rate_pct": 20.0
+      },
+      {
+        "period_start": "2022-06-09",
+        "period_end": "2022-09-05",
+        "strategy": "Bollinger Mean Reversion",
+        "params": {
+          "n": 20,
+          "k": 2.5
+        },
+        "switched": true,
+        "selection_score": 0.842,
+        "realized_return_pct": -0.6,
+        "realized_sharpe": -0.333,
+        "realized_max_dd_pct": -3.91,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2022-09-06",
+        "period_end": "2022-12-01",
+        "strategy": "Bollinger Mean Reversion",
+        "params": {
+          "n": 20,
+          "k": 2.5
+        },
+        "switched": false,
+        "selection_score": 1.446,
+        "realized_return_pct": -4.95,
+        "realized_sharpe": -2.433,
+        "realized_max_dd_pct": -5.51,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2022-12-04",
+        "period_end": "2023-03-02",
+        "strategy": "RSI Mean Reversion",
+        "params": {
+          "n": 14,
+          "low_th": 30,
+          "high_th": 70
+        },
+        "switched": true,
+        "selection_score": 0.804,
+        "realized_return_pct": -5.65,
+        "realized_sharpe": -1.815,
+        "realized_max_dd_pct": -9.6,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2023-03-05",
+        "period_end": "2023-05-31",
+        "strategy": "Bollinger Breakout",
+        "params": {
+          "n": 14,
+          "k": 2.0
+        },
+        "switched": true,
+        "selection_score": 0.64,
+        "realized_return_pct": 2.3,
+        "realized_sharpe": 0.628,
+        "realized_max_dd_pct": -5.61,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 33.33
+      },
+      {
+        "period_start": "2023-06-01",
+        "period_end": "2023-08-28",
+        "strategy": "Bollinger Breakout",
+        "params": {
+          "n": 14,
+          "k": 2.0
+        },
+        "switched": false,
+        "selection_score": 0.659,
+        "realized_return_pct": -1.75,
+        "realized_sharpe": -0.74,
+        "realized_max_dd_pct": -6.08,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2023-08-29",
+        "period_end": "2023-11-23",
+        "strategy": "Bollinger Breakout",
+        "params": {
+          "n": 14,
+          "k": 2.0
+        },
+        "switched": false,
+        "selection_score": 0.618,
+        "realized_return_pct": -5.95,
+        "realized_sharpe": -2.005,
+        "realized_max_dd_pct": -7.78,
+        "realized_trades": 4,
+        "realized_win_rate_pct": 25.0
+      },
+      {
+        "period_start": "2023-11-26",
+        "period_end": "2024-02-22",
+        "strategy": "ATR Trend (Keltner-style)",
+        "params": {
+          "ema_n": 20,
+          "atr_n": 10,
+          "mult": 2.0
+        },
+        "switched": true,
+        "selection_score": 0.582,
+        "realized_return_pct": 1.0,
+        "realized_sharpe": 0.396,
+        "realized_max_dd_pct": -4.46,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2024-02-25",
+        "period_end": "2024-05-22",
+        "strategy": "RSI Mean Reversion",
+        "params": {
+          "n": 7,
+          "low_th": 20,
+          "high_th": 80
+        },
+        "switched": true,
+        "selection_score": 0.486,
+        "realized_return_pct": -10.92,
+        "realized_sharpe": -3.85,
+        "realized_max_dd_pct": -13.23,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2024-05-23",
+        "period_end": "2024-08-19",
+        "strategy": "EMA Crossover",
+        "params": {
+          "fast": 5,
+          "slow": 50
+        },
+        "switched": true,
+        "selection_score": 0.712,
+        "realized_return_pct": 7.66,
+        "realized_sharpe": 1.878,
+        "realized_max_dd_pct": -4.24,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2024-08-20",
+        "period_end": "2024-11-14",
+        "strategy": "EMA Crossover",
+        "params": {
+          "fast": 5,
+          "slow": 50
+        },
+        "switched": false,
+        "selection_score": 0.748,
+        "realized_return_pct": 2.64,
+        "realized_sharpe": 0.795,
+        "realized_max_dd_pct": -7.7,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2024-11-17",
+        "period_end": "2025-02-13",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 10,
+          "slow": 100
+        },
+        "switched": true,
+        "selection_score": 0.859,
+        "realized_return_pct": 9.07,
+        "realized_sharpe": 2.489,
+        "realized_max_dd_pct": -4.88,
+        "realized_trades": 3,
+        "realized_win_rate_pct": 66.67
+      },
+      {
+        "period_start": "2025-02-16",
+        "period_end": "2025-05-14",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 20,
+          "slow": 200
+        },
+        "switched": true,
+        "selection_score": 1.133,
+        "realized_return_pct": 11.73,
+        "realized_sharpe": 2.031,
+        "realized_max_dd_pct": -7.39,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2025-05-15",
+        "period_end": "2025-08-11",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 20,
+          "slow": 200
+        },
+        "switched": false,
+        "selection_score": 1.343,
+        "realized_return_pct": 4.44,
+        "realized_sharpe": 1.214,
+        "realized_max_dd_pct": -4.62,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2025-08-12",
+        "period_end": "2025-11-06",
+        "strategy": "SMA Crossover",
+        "params": {
+          "fast": 5,
+          "slow": 200
+        },
+        "switched": true,
+        "selection_score": 1.432,
+        "realized_return_pct": 19.18,
+        "realized_sharpe": 3.512,
+        "realized_max_dd_pct": -9.76,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2025-11-09",
+        "period_end": "2026-02-05",
+        "strategy": "EMA Crossover",
+        "params": {
+          "fast": 12,
+          "slow": 50
+        },
+        "switched": true,
+        "selection_score": 1.519,
+        "realized_return_pct": 20.57,
+        "realized_sharpe": 2.43,
+        "realized_max_dd_pct": -13.98,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2026-02-08",
+        "period_end": "2026-05-06",
+        "strategy": "EMA Crossover",
+        "params": {
+          "fast": 12,
+          "slow": 50
+        },
+        "switched": false,
+        "selection_score": 1.943,
+        "realized_return_pct": -18.81,
+        "realized_sharpe": -2.9,
+        "realized_max_dd_pct": -25.06,
+        "realized_trades": 2,
+        "realized_win_rate_pct": 0.0
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-08-03",
+        "strategy": "Bollinger Breakout",
+        "params": {
+          "n": 30,
+          "k": 1.5
+        },
+        "switched": true,
+        "selection_score": 1.318,
+        "realized_return_pct": 14.03,
+        "realized_sharpe": 2.362,
+        "realized_max_dd_pct": -6.14,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      },
+      {
+        "period_start": "2026-08-04",
+        "period_end": "2026-09-03",
+        "strategy": "Bollinger Breakout",
+        "params": {
+          "n": 30,
+          "k": 1.5
+        },
+        "switched": false,
+        "selection_score": 1.417,
+        "realized_return_pct": 5.15,
+        "realized_sharpe": 2.196,
+        "realized_max_dd_pct": -7.1,
+        "realized_trades": 1,
+        "realized_win_rate_pct": 100.0
+      }
+    ],
+    "summary": {
+      "n_periods": 42,
+      "n_switches": 25,
+      "adaptive_total_return_pct": -7.11,
+      "equity_curve": [
+        {
+          "period_end": "2016-10-26",
+          "equity": 0.9999
+        },
+        {
+          "period_end": "2017-01-25",
+          "equity": 0.9421
+        },
+        {
+          "period_end": "2017-04-25",
+          "equity": 0.9208
+        },
+        {
+          "period_end": "2017-07-23",
+          "equity": 0.9447
+        },
+        {
+          "period_end": "2017-10-18",
+          "equity": 1.0192
+        },
+        {
+          "period_end": "2018-01-17",
+          "equity": 1.0594
+        },
+        {
+          "period_end": "2018-04-17",
+          "equity": 1.0456
+        },
+        {
+          "period_end": "2018-07-15",
+          "equity": 1.0344
+        },
+        {
+          "period_end": "2018-10-10",
+          "equity": 1.0496
+        },
+        {
+          "period_end": "2019-01-08",
+          "equity": 1.0743
+        },
+        {
+          "period_end": "2019-04-07",
+          "equity": 0.9847
+        },
+        {
+          "period_end": "2019-07-04",
+          "equity": 0.9447
+        },
+        {
+          "period_end": "2019-10-01",
+          "equity": 0.8709
+        },
+        {
+          "period_end": "2019-12-30",
+          "equity": 0.829
+        },
+        {
+          "period_end": "2020-03-29",
+          "equity": 0.7765
+        },
+        {
+          "period_end": "2020-06-25",
+          "equity": 0.7247
+        },
+        {
+          "period_end": "2020-09-22",
+          "equity": 0.7614
+        },
+        {
+          "period_end": "2020-12-20",
+          "equity": 0.7074
+        },
+        {
+          "period_end": "2021-03-21",
+          "equity": 0.7146
+        },
+        {
+          "period_end": "2021-06-17",
+          "equity": 0.6262
+        },
+        {
+          "period_end": "2021-09-14",
+          "equity": 0.6351
+        },
+        {
+          "period_end": "2021-12-12",
+          "equity": 0.6541
+        },
+        {
+          "period_end": "2022-03-10",
+          "equity": 0.6224
+        },
+        {
+          "period_end": "2022-06-08",
+          "equity": 0.6228
+        },
+        {
+          "period_end": "2022-09-05",
+          "equity": 0.619
+        },
+        {
+          "period_end": "2022-12-01",
+          "equity": 0.5884
+        },
+        {
+          "period_end": "2023-03-02",
+          "equity": 0.5551
+        },
+        {
+          "period_end": "2023-05-31",
+          "equity": 0.5679
+        },
+        {
+          "period_end": "2023-08-28",
+          "equity": 0.558
+        },
+        {
+          "period_end": "2023-11-23",
+          "equity": 0.5248
+        },
+        {
+          "period_end": "2024-02-22",
+          "equity": 0.53
+        },
+        {
+          "period_end": "2024-05-22",
+          "equity": 0.4721
+        },
+        {
+          "period_end": "2024-08-19",
+          "equity": 0.5083
+        },
+        {
+          "period_end": "2024-11-14",
+          "equity": 0.5217
+        },
+        {
+          "period_end": "2025-02-13",
+          "equity": 0.5691
+        },
+        {
+          "period_end": "2025-05-14",
+          "equity": 0.6358
+        },
+        {
+          "period_end": "2025-08-11",
+          "equity": 0.664
+        },
+        {
+          "period_end": "2025-11-06",
+          "equity": 0.7914
+        },
+        {
+          "period_end": "2026-02-05",
+          "equity": 0.9542
+        },
+        {
+          "period_end": "2026-05-06",
+          "equity": 0.7747
+        },
+        {
+          "period_end": "2026-08-03",
+          "equity": 0.8834
+        },
+        {
+          "period_end": "2026-09-03",
+          "equity": 0.9289
+        }
+      ],
+      "strategy_usage": {
+        "Bollinger Mean Reversion": {
+          "periods": 6,
+          "total_return_pct": -13.98
+        },
+        "MACD Crossover": {
+          "periods": 10,
+          "total_return_pct": -1.4100000000000015
+        },
+        "Momentum": {
+          "periods": 1,
+          "total_return_pct": -1.07
+        },
+        "ATR Trend (Keltner-style)": {
+          "periods": 2,
+          "total_return_pct": -3.8099999999999996
+        },
+        "Bollinger Breakout": {
+          "periods": 6,
+          "total_return_pct": 7.4399999999999995
+        },
+        "SMA Crossover": {
+          "periods": 7,
+          "total_return_pct": 26.410000000000004
+        },
+        "EMA Crossover": {
+          "periods": 6,
+          "total_return_pct": 10.030000000000005
+        },
+        "RSI Mean Reversion": {
+          "periods": 4,
+          "total_return_pct": -18.43
+        }
+      }
+    }
+  }
+}
