@@ -1,0 +1,511 @@
+<title>Trạm Chiến Lược XAU</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #F3F2EE;
+    --surface: #FFFFFF;
+    --surface-2: #EAE7E0;
+    --border: #DBD7CC;
+    --text: #18191B;
+    --text-muted: #5C5F63;
+    --accent: #9A6E17;
+    --accent-strong: #6E4E0E;
+    --accent-soft: #F1E4C6;
+    --long: #1E7A4C;
+    --long-soft: #DCEFE2;
+    --short: #B23A2E;
+    --short-soft: #F6DFDA;
+    --flat: #736B58;
+    --flat-soft: #EAE5D8;
+    --shadow: 0 1px 2px rgba(24,20,10,.06), 0 8px 24px -12px rgba(24,20,10,.18);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #111214;
+      --surface: #191B1E;
+      --surface-2: #212327;
+      --border: #2E3136;
+      --text: #ECEDEE;
+      --text-muted: #9BA0A6;
+      --accent: #E3B23C;
+      --accent-strong: #F3C863;
+      --accent-soft: #3A2F13;
+      --long: #3FC583;
+      --long-soft: #17301F;
+      --short: #F0685C;
+      --short-soft: #3A1B18;
+      --flat: #9099A1;
+      --flat-soft: #24262A;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #111214;
+    --surface: #191B1E;
+    --surface-2: #212327;
+    --border: #2E3136;
+    --text: #ECEDEE;
+    --text-muted: #9BA0A6;
+    --accent: #E3B23C;
+    --accent-strong: #F3C863;
+    --accent-soft: #3A2F13;
+    --long: #3FC583;
+    --long-soft: #17301F;
+    --short: #F0685C;
+    --short-soft: #3A1B18;
+    --flat: #9099A1;
+    --flat-soft: #24262A;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.6);
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    text-wrap: balance;
+    letter-spacing: .01em;
+    margin: 0;
+  }
+  .mono{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  a{ color: var(--accent); }
+
+  .wrap{ max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
+
+  header.top{
+    display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; justify-content:space-between;
+    padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border);
+  }
+  header.top .brand{ display:flex; align-items:center; gap:12px; }
+  header.top .coin{
+    width:40px; height:40px; border-radius:50%;
+    background: radial-gradient(circle at 32% 28%, var(--accent-strong), var(--accent) 60%, var(--accent-strong));
+    display:flex; align-items:center; justify-content:center; color:#1a1200; font-family:'Barlow Condensed'; font-weight:700; font-size:18px;
+    box-shadow: var(--shadow);
+    flex: none;
+  }
+  header.top h1{ font-size: 30px; }
+  header.top .sub{ color:var(--text-muted); font-size: 13.5px; margin-top:2px; }
+  header.top .meta{ text-align:right; font-size: 12.5px; color:var(--text-muted); }
+  header.top .meta .live-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--long); margin-right:6px; box-shadow:0 0 0 3px var(--long-soft); }
+
+  section{ margin-bottom: 30px; }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom: 12px; flex-wrap:wrap; }
+  .section-head h2{ font-size: 22px; }
+  .section-head .note{ font-size: 12.5px; color: var(--text-muted); max-width: 46ch; }
+  .eyebrow{ text-transform:uppercase; letter-spacing:.09em; font-size:11px; color:var(--text-muted); font-weight:600; }
+
+  .hero-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap:16px; }
+  @media (max-width: 860px){ .hero-grid{ grid-template-columns: 1fr; } }
+
+  .card{
+    background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .signal-card{ padding: 22px 24px; display:flex; flex-direction:column; gap:14px; justify-content:space-between; }
+  .signal-card .top-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .signal-pill{
+    display:inline-flex; align-items:center; gap:8px; padding: 7px 14px; border-radius: 999px;
+    font-family:'Barlow Condensed'; font-weight:700; font-size: 20px; letter-spacing:.02em;
+  }
+  .signal-pill.long{ background:var(--long-soft); color:var(--long); }
+  .signal-pill.short{ background:var(--short-soft); color:var(--short); }
+  .signal-pill.flat{ background:var(--flat-soft); color:var(--flat); }
+  .signal-card .price{ font-family:'Barlow Condensed'; font-size:40px; font-weight:700; }
+  .signal-card .price small{ font-size:15px; color:var(--text-muted); font-family:'Public Sans'; font-weight:500; }
+  .signal-card .strat-line{ font-size: 14px; color: var(--text-muted); }
+  .signal-card .strat-line b{ color: var(--text); font-weight:600; }
+  .signal-card .asof{ font-size:12px; color:var(--text-muted); }
+  .disclaimer-inline{ font-size:11.5px; color:var(--text-muted); border-top:1px dashed var(--border); padding-top:10px; }
+
+  .stat-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+  .stat-tile{ padding:16px 16px; display:flex; flex-direction:column; gap:6px; }
+  .stat-tile .val{ font-family:'Barlow Condensed'; font-size:26px; font-weight:700; }
+  .stat-tile .lbl{ font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; }
+  .stat-tile .val.pos{ color: var(--long); }
+  .stat-tile .val.neg{ color: var(--short); }
+
+  .chart-card{ padding: 20px 22px 12px; }
+  svg text{ fill: var(--text-muted); font-family:'IBM Plex Mono', monospace; font-size: 10.5px; }
+  .legend{ display:flex; gap:16px; font-size:12px; color:var(--text-muted); margin-top:6px; flex-wrap:wrap;}
+  .legend .sw{ display:inline-block; width:12px; height:3px; border-radius:2px; margin-right:5px; vertical-align:middle; }
+
+  table{ border-collapse: collapse; width:100%; font-size: 13px; }
+  thead th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color: var(--text-muted);
+    padding: 8px 10px; border-bottom:1px solid var(--border); position: sticky; top:0; background:var(--surface);
+    font-weight:600;
+  }
+  tbody td{ padding: 9px 10px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background: var(--surface-2); }
+  .table-scroll{ overflow-x:auto; }
+  .table-scroll.v{ max-height: 380px; overflow-y:auto; }
+  td.num, th.num{ text-align:right; font-family:'IBM Plex Mono', monospace; }
+  .pct.pos{ color: var(--long); }
+  .pct.neg{ color: var(--short); }
+  .rank-badge{
+    display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px;
+    background: var(--accent-soft); color: var(--accent-strong); font-family:'Barlow Condensed'; font-weight:700; font-size:12.5px;
+  }
+  .chip{ display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600; }
+  .chip.switch{ background:var(--accent-soft); color:var(--accent-strong); }
+  .chip.hold{ background:var(--flat-soft); color:var(--flat); }
+
+  .usage-bars{ display:flex; flex-direction:column; gap:8px; }
+  .usage-row{ display:grid; grid-template-columns: 150px 1fr 70px; gap:10px; align-items:center; font-size:12.5px; }
+  .usage-row .bar-track{ height:8px; border-radius:5px; background:var(--surface-2); overflow:hidden; }
+  .usage-row .bar-fill{ height:100%; background:var(--accent); }
+  .usage-row .ret{ text-align:right; font-family:'IBM Plex Mono'; }
+
+  .two-col{ display:grid; grid-template-columns: 1.4fr 1fr; gap:16px; }
+  @media (max-width: 860px){ .two-col{ grid-template-columns: 1fr; } }
+
+  footer{ margin-top: 40px; padding-top:20px; border-top:1px solid var(--border); color:var(--text-muted); font-size:12.5px; }
+  footer .disclaimer{ background: var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+  footer .disclaimer b{ color: var(--text); }
+  footer .methodology{ font-size:12.5px; }
+  footer .methodology summary{ cursor:pointer; color:var(--text); font-weight:600; font-family:'Barlow Condensed'; font-size:15px; }
+
+  .badge-live{ font-size:11px; padding:3px 9px; border-radius:999px; background:var(--long-soft); color:var(--long); font-weight:600; }
+  .badge-seed{ font-size:11px; padding:3px 9px; border-radius:999px; background:var(--flat-soft); color:var(--flat); font-weight:600; }
+
+  ::-webkit-scrollbar{ height:8px; width:8px; }
+  ::-webkit-scrollbar-thumb{ background: var(--border); border-radius:8px; }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="coin">Au</div>
+      <div>
+        <h1>Trạm Chiến Lược XAU</h1>
+        <div class="sub">Tự động dò &amp; xếp hạng chiến lược giao dịch Vàng/USD trên dữ liệu 10+ năm — nguồn: TradingView, layout "Nguyên 7" (OANDA:XAUUSD)</div>
+      </div>
+    </div>
+    <div class="meta" id="metaBox">
+      <div><span class="live-dot" id="liveDot"></span><span id="dbStatus">Đang tải dữ liệu…</span></div>
+      <div>Cập nhật lần cuối: <span class="mono" id="lastUpdated">—</span></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="hero-grid">
+      <div class="card signal-card">
+        <div class="top-row">
+          <div>
+            <div class="eyebrow">Khuyến nghị hôm nay</div>
+            <div id="signalPill"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="eyebrow">Giá đóng cửa gần nhất</div>
+            <div class="price" id="priceBox">—</div>
+          </div>
+        </div>
+        <div class="strat-line" id="stratLine"></div>
+        <div class="asof" id="asOfLine"></div>
+        <div class="disclaimer-inline">⚠️ Đây là kết quả mô phỏng/backtest tự động, <b>không phải lời khuyên đầu tư</b>. Hiệu suất quá khứ không đảm bảo kết quả tương lai — xem mục "Phương pháp &amp; rủi ro" phía dưới trước khi ra quyết định giao dịch thật.</div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Đường vốn — chiến lược tốt nhất</h2>
+      <div class="note" id="chartNote"></div>
+    </div>
+    <div class="card chart-card">
+      <div id="chartHost"></div>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--flat)"></span>Trong mẫu (in-sample)</span>
+        <span><span class="sw" style="background:var(--accent)"></span>Ngoài mẫu (out-of-sample, dùng để chọn chiến lược)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Bảng xếp hạng chiến lược</h2>
+      <div class="note">Xếp theo hiệu suất điều chỉnh rủi ro trên dữ liệu <b>ngoài mẫu</b> (out-of-sample) — phần dữ liệu engine chưa "nhìn thấy" khi chọn tham số.</div>
+    </div>
+    <div class="card">
+      <div class="table-scroll">
+        <table id="leaderboardTable"></table>
+      </div>
+    </div>
+  </section>
+
+  <div class="two-col">
+    <section>
+      <div class="section-head">
+        <h2>Lịch sử thử &amp; đổi chiến lược</h2>
+        <div class="note" id="wfNote"></div>
+      </div>
+      <div class="card">
+        <div class="table-scroll v">
+          <table id="wfTable"></table>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="section-head"><h2>Mức dùng theo chiến lược</h2></div>
+      <div class="card" style="padding:18px 20px;">
+        <div class="usage-bars" id="usageBars"></div>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>Lịch sử tín hiệu hằng ngày</h2>
+      <div class="note">Nhật ký các khuyến nghị theo ngày, tích lũy dần khi tác vụ hằng ngày chạy. <span id="signalsBadge"></span></div>
+    </div>
+    <div class="card">
+      <div class="table-scroll">
+        <table id="signalsTable"></table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="disclaimer">
+      <b>⚠️ Không phải lời khuyên tài chính.</b> Toàn bộ nội dung trên trang này là kết quả của một hệ thống backtest tự động, mang tính chất nghiên cứu/tham khảo. Vàng (XAU/USD) là tài sản biến động mạnh; hiệu suất backtest lịch sử — kể cả trên 10+ năm dữ liệu — <b>không đảm bảo</b> lợi nhuận trong tương lai và không tính đến mọi rủi ro thực tế (trượt giá, thanh khoản, đòn bẩy, tin tức bất ngờ...). Trước khi giao dịch bằng tiền thật, hãy tự nghiên cứu thêm và cân nhắc tham khảo ý kiến của một cố vấn tài chính được cấp phép.
+    </div>
+    <details class="methodology">
+      <summary>Phương pháp &amp; rủi ro (bấm để xem chi tiết)</summary>
+      <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+        <p><b>Nguồn dữ liệu:</b> Giá OHLC hằng ngày của OANDA:XAUUSD, xuất trực tiếp từ layout TradingView "Nguyên 7" của bạn (tính năng "Download chart data" chính chủ của TradingView) — không dùng nguồn nào khác.</p>
+        <p><b>Cách backtest:</b> Với mỗi chiến lược, engine tách dữ liệu thành phần "trong mẫu" (train, ~70% đầu) để tối ưu ý tưởng, và phần "ngoài mẫu" (test, ~30% cuối) để đánh giá công bằng — giống hệt cách một chiến lược sẽ hoạt động trên dữ liệu nó "chưa từng thấy". Lệnh được giả định khớp ở giá mở cửa của ngày kế tiếp sau khi có tín hiệu ở giá đóng cửa, có trừ chi phí giao dịch ước tính ({{cost_bps}} điểm cơ bản mỗi lần đổi vị thế) để mô phỏng spread/trượt giá.</p>
+        <p><b>Bộ chiến lược thử nghiệm:</b> {{n_families}} họ chiến lược kỹ thuật kinh điển (SMA/EMA crossover, RSI mean-reversion, MACD, Bollinger Bands (đảo chiều &amp; breakout), Donchian breakout, Momentum, ATR trend) × nhiều bộ tham số khác nhau — tổng cộng {{n_variants}} biến thể được chấm điểm.</p>
+        <p><b>Cơ chế "thử — không hiệu quả thì đổi":</b> Mục "Lịch sử thử &amp; đổi chiến lược" mô phỏng việc chạy hệ thống thực tế theo từng quý: tại mỗi mốc, engine chỉ nhìn vào ~2 năm dữ liệu ngay trước đó (không nhìn tương lai) để chọn chiến lược đang mạnh nhất, áp dụng cho quý kế tiếp, ghi nhận kết quả thật, và có thể đổi sang chiến lược khác ở quý sau nếu một chiến lược khác vượt lên. Đây là bằng chứng minh bạch — kể cả những giai đoạn engine chọn sai.</p>
+        <p><b>Cập nhật hằng ngày:</b> Một tác vụ theo lịch chạy mỗi ngày sẽ lấy thêm dữ liệu mới nhất từ layout "Nguyên 7", chạy lại toàn bộ quá trình tìm &amp; xếp hạng chiến lược, và lưu kết quả (kèm khuyến nghị mua/bán/đứng ngoài của ngày hôm đó) vào lịch sử phía trên.</p>
+      </div>
+    </details>
+  </footer>
+
+</div>
+
+<script>
+const SEED = __SEED_JSON__;
+
+function fmtPct(v, digits=2){
+  if (v === null || v === undefined || Number.isNaN(v)) return "—";
+  const s = (v>=0?"+":"") + v.toFixed(digits) + "%";
+  return s;
+}
+function pctClass(v){ return v > 0 ? "pos" : (v < 0 ? "neg" : ""); }
+function fmtPrice(v){
+  return v.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function fmtParams(p){
+  return Object.entries(p).map(([k,v]) => `${k}=${v}`).join(", ");
+}
+function signalMeta(position){
+  if (position === 1) return {cls:"long", label:"MUA (Long)"};
+  if (position === -1) return {cls:"short", label:"BÁN (Short)"};
+  return {cls:"flat", label:"ĐỨNG NGOÀI"};
+}
+
+function renderHero(data){
+  const sig = data.live_signal;
+  const meta = signalMeta(sig.position);
+  document.getElementById("signalPill").innerHTML =
+    `<span class="signal-pill ${meta.cls}">${meta.label}</span>`;
+  document.getElementById("priceBox").innerHTML =
+    `$${fmtPrice(sig.as_of_close)} <small>XAU/USD</small>`;
+  const bs = data.best_strategy;
+  document.getElementById("stratLine").innerHTML =
+    `Theo chiến lược đang xếp hạng #1: <b>${bs.strategy}</b> — <span class="mono">${fmtParams(bs.params)}</span>`;
+  document.getElementById("asOfLine").textContent =
+    `Tính đến phiên đóng cửa ${sig.as_of_date}`;
+
+  const t = bs.test;
+  const stats = [
+    {lbl:"Biến thể đã kiểm định", val: data.n_variants_tested, cls:""},
+    {lbl:"CAGR (ngoài mẫu)", val: fmtPct(t.cagr_pct), cls: pctClass(t.cagr_pct)},
+    {lbl:"Sụt giảm tối đa (ngoài mẫu)", val: fmtPct(t.max_drawdown_pct), cls: "neg"},
+    {lbl:"Số lệnh (ngoài mẫu)", val: t.n_trades, cls:""},
+  ];
+  document.getElementById("statGrid").innerHTML = stats.map(s =>
+    `<div class="card stat-tile"><div class="val ${s.cls}">${s.val}</div><div class="lbl">${s.lbl}</div></div>`
+  ).join("");
+
+  document.getElementById("chartNote").textContent =
+    `${bs.strategy} (${fmtParams(bs.params)}) — dữ liệu ${data.data_range.start} → ${data.data_range.end}`;
+}
+
+function renderChart(data){
+  const curve = data.best_strategy.equity_curve;
+  const splitDate = data.train_test_split_date;
+  const W = 1000, H = 260, PAD = {l:44, r:14, t:14, b:24};
+  const innerW = W - PAD.l - PAD.r, innerH = H - PAD.t - PAD.b;
+  const vals = curve.map(p => p.equity);
+  const minV = Math.min(...vals), maxV = Math.max(...vals);
+  const n = curve.length;
+  const x = i => PAD.l + (i/(n-1)) * innerW;
+  const y = v => PAD.t + innerH - ((v - minV)/(maxV - minV || 1)) * innerH;
+
+  let splitIdx = curve.findIndex(p => p.date >= splitDate);
+  if (splitIdx < 0) splitIdx = 0;
+
+  function pathFor(a, b){
+    let d = "";
+    for(let i=a;i<b;i++){
+      d += (i===a? "M":"L") + x(i).toFixed(2) + "," + y(vals[i]).toFixed(2) + " ";
+    }
+    return d;
+  }
+  const pathIn = pathFor(0, splitIdx+1);
+  const pathOut = pathFor(splitIdx, n);
+
+  const gridLines = [0,0.25,0.5,0.75,1].map(f => {
+    const v = minV + f*(maxV-minV);
+    const yy = y(v);
+    return `<line x1="${PAD.l}" x2="${W-PAD.r}" y1="${yy}" y2="${yy}" stroke="var(--border)" stroke-width="1"/>
+            <text x="${PAD.l-6}" y="${yy+3}" text-anchor="end">${v.toFixed(2)}x</text>`;
+  }).join("");
+
+  const svg = `
+  <svg viewBox="0 0 ${W} ${H}" width="100%" height="260" preserveAspectRatio="none" role="img" aria-label="Đường vốn chiến lược tốt nhất">
+    ${gridLines}
+    <line x1="${x(splitIdx)}" x2="${x(splitIdx)}" y1="${PAD.t}" y2="${H-PAD.b}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3,3"/>
+    <path d="${pathIn}" fill="none" stroke="var(--flat)" stroke-width="1.6"/>
+    <path d="${pathOut}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <circle cx="${x(n-1)}" cy="${y(vals[n-1])}" r="3.4" fill="var(--accent)"/>
+    <text x="${PAD.l}" y="${H-6}">${curve[0].date}</text>
+    <text x="${x(splitIdx)}" y="${H-6}" text-anchor="middle">chia mẫu</text>
+    <text x="${W-PAD.r}" y="${H-6}" text-anchor="end">${curve[n-1].date}</text>
+  </svg>`;
+  document.getElementById("chartHost").innerHTML = svg;
+}
+
+function renderLeaderboard(data){
+  const rows = data.leaderboard.map((r,i) => {
+    const t = r.test;
+    return `<tr>
+      <td><span class="rank-badge">${i+1}</span></td>
+      <td>${r.strategy}</td>
+      <td class="mono" style="color:var(--text-muted)">${fmtParams(r.params)}</td>
+      <td class="num">${t.n_trades}</td>
+      <td class="num pct ${pctClass(t.cagr_pct)}">${fmtPct(t.cagr_pct)}</td>
+      <td class="num pct neg">${fmtPct(t.max_drawdown_pct)}</td>
+      <td class="num">${t.win_rate_pct.toFixed(1)}%</td>
+      <td class="num">${(Number.isFinite(t.profit_factor) && t.profit_factor < 999)? t.profit_factor.toFixed(2): "∞"}</td>
+      <td class="num">${t.sharpe.toFixed(2)}</td>
+    </tr>`;
+  }).join("");
+  document.getElementById("leaderboardTable").innerHTML = `
+    <thead><tr>
+      <th>#</th><th>Chiến lược</th><th>Tham số</th>
+      <th class="num">Số lệnh</th><th class="num">CAGR</th><th class="num">Max DD</th>
+      <th class="num">Win rate</th><th class="num">Profit factor</th><th class="num">Sharpe</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>`;
+}
+
+function renderWalkForward(data){
+  const wf = data.walk_forward;
+  document.getElementById("wfNote").textContent =
+    `${wf.summary.n_periods} kỳ (~1 quý/kỳ), ${wf.summary.n_switches} lần đổi chiến lược · lợi nhuận cộng dồn mô phỏng: ${fmtPct(wf.summary.adaptive_total_return_pct)}`;
+  const rows = [...wf.log].reverse().map(r => `
+    <tr>
+      <td class="mono">${r.period_start} → ${r.period_end}</td>
+      <td>${r.strategy}</td>
+      <td class="mono" style="color:var(--text-muted)">${fmtParams(r.params)}</td>
+      <td>${r.switched? '<span class="chip switch">Đổi</span>' : '<span class="chip hold">Giữ</span>'}</td>
+      <td class="num pct ${pctClass(r.realized_return_pct)}">${fmtPct(r.realized_return_pct)}</td>
+      <td class="num">${r.realized_trades}</td>
+    </tr>`).join("");
+  document.getElementById("wfTable").innerHTML = `
+    <thead><tr>
+      <th>Kỳ</th><th>Chiến lược được chọn</th><th>Tham số</th><th>Trạng thái</th>
+      <th class="num">Lợi nhuận kỳ</th><th class="num">Số lệnh</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>`;
+
+  const usage = wf.summary.strategy_usage;
+  const maxPeriods = Math.max(...Object.values(usage).map(u => u.periods));
+  const entries = Object.entries(usage).sort((a,b) => b[1].periods - a[1].periods);
+  document.getElementById("usageBars").innerHTML = entries.map(([name,u]) => `
+    <div class="usage-row">
+      <div>${name}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(u.periods/maxPeriods*100).toFixed(0)}%"></div></div>
+      <div class="ret pct ${pctClass(u.total_return_pct)}">${fmtPct(u.total_return_pct,1)}</div>
+    </div>`).join("");
+}
+
+function renderSignals(list, live){
+  document.getElementById("signalsBadge").innerHTML = live
+    ? '<span class="badge-live">● đang đọc dữ liệu trực tiếp</span>'
+    : '<span class="badge-seed">chỉ có snapshot lúc xuất bản</span>';
+  const rows = list.map(s => {
+    const meta = signalMeta(s.position);
+    return `<tr>
+      <td class="mono">${s.date}</td>
+      <td><span class="signal-pill ${meta.cls}" style="font-size:12.5px; padding:3px 10px;">${meta.label}</span></td>
+      <td>${s.strategy}</td>
+      <td class="mono" style="color:var(--text-muted)">${fmtParams(s.params)}</td>
+      <td class="num mono">$${fmtPrice(s.as_of_close)}</td>
+    </tr>`;
+  }).join("");
+  document.getElementById("signalsTable").innerHTML = `
+    <thead><tr><th>Ngày</th><th>Khuyến nghị</th><th>Chiến lược</th><th>Tham số</th><th class="num">Giá đóng cửa</th></tr></thead>
+    <tbody>${rows}</tbody>`;
+}
+
+function renderAll(data, signalsList, opts={}){
+  renderHero(data);
+  renderChart(data);
+  renderLeaderboard(data);
+  renderWalkForward(data);
+  renderSignals(signalsList, !!opts.live);
+  document.getElementById("lastUpdated").textContent = new Date(data.generated_at).toLocaleString("vi-VN");
+}
+
+// initial paint from embedded seed (always instant, always correct even offline)
+renderAll(SEED, [{
+  date: SEED.live_signal.as_of_date,
+  strategy: SEED.best_strategy.strategy,
+  params: SEED.best_strategy.params,
+  position: SEED.live_signal.position,
+  as_of_close: SEED.live_signal.as_of_close,
+}], {live:false});
+document.getElementById("dbStatus").textContent = "Snapshot lúc xuất bản";
+document.getElementById("liveDot").style.background = "var(--flat)";
+
+// try to upgrade to live db data
+(async () => {
+  try{
+    const db = await claude.use("db");
+    if(!db){ return; }
+    const runsSnap = await db.collection("runs").orderBy("date","desc").limit(1).get();
+    const sigSnap = await db.collection("signals").orderBy("date","desc").limit(60).get();
+    if(!runsSnap.empty){
+      const latest = runsSnap.docs[0].data();
+      const signalsList = sigSnap.docs.map(d => d.data()).sort((a,b)=> a.date < b.date ? 1 : -1);
+      renderAll(latest, signalsList.length? signalsList: [{
+        date: latest.live_signal.as_of_date,
+        strategy: latest.best_strategy.strategy,
+        params: latest.best_strategy.params,
+        position: latest.live_signal.position,
+        as_of_close: latest.live_signal.as_of_close,
+      }], {live:true});
+      document.getElementById("dbStatus").textContent = "Dữ liệu trực tiếp";
+      document.getElementById("liveDot").style.background = "var(--long)";
+    }
+  } catch(e){
+    console.warn("db unavailable, showing published snapshot", e);
+  }
+})();
+</script>
