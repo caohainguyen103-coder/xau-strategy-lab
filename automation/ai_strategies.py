@@ -9,8 +9,8 @@ STRATEGY_REGISTRY in engine_full.py:
         "grid": [ {param combo}, {param combo}, ... ],  # 2-6 combos
     }
 
-The daily scheduled job invents and appends ONE new entry here per day (when
-the pool has fewer than 60 entries), after smoke-testing the function.
+The daily scheduled job invents and appends UP TO 5 new entries here per run
+(when the pool has fewer than 200 entries), after smoke-testing each function.
 automation/ai_strategies_meta.json tracks the date each entry was first
 added -- a new AI strategy must be at least 30 days old before the engine
 will let it become the live trading recommendation (see MATURATION_DAYS in
