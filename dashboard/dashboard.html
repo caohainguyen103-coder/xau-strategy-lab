@@ -162,6 +162,9 @@
   .chip.hold{ background:var(--flat-soft); color:var(--flat); }
   .chip.ai-trial{ background:var(--accent-soft); color:var(--accent-strong); margin-left:6px; }
   .chip.ai-eligible{ background:var(--long-soft); color:var(--long); margin-left:6px; }
+  .chip.action-removed{ background:var(--short-soft); color:var(--short); margin-left:6px; }
+  .chip.action-expanded{ background:var(--long-soft); color:var(--long); margin-left:6px; }
+  .chip.action-failed{ background:var(--flat-soft); color:var(--flat); margin-left:6px; }
 
   .usage-bars{ display:flex; flex-direction:column; gap:8px; }
   .usage-row{ display:grid; grid-template-columns: 150px 1fr 70px; gap:10px; align-items:center; font-size:12.5px; }
@@ -280,6 +283,25 @@
     </div>
   </section>
 
+    <section>
+    <div class="section-head">
+      <h2>Tối ưu chiến lược cốt lõi (tự động)</h2>
+      <div class="note">Mỗi ngày, tác vụ tự động đánh giá hiệu suất từng họ chiến lược "gốc" và có thể xoá/mở rộng — mọi thay đổi đều được ghi log tại đây. <span id="registryBadge"></span></div>
+    </div>
+    <div class="hero-grid">
+      <div class="card">
+        <div class="table-scroll">
+          <table id="registryStreakTable"></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-scroll">
+          <table id="registryChangelogTable"></table>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="disclaimer">
       <b>⚠️ Không phải lời khuyên tài chính.</b> Toàn bộ nội dung trên trang này là kết quả của một hệ thống backtest tự động, mang tính chất nghiên cứu/tham khảo. Vàng (XAU/USD) là tài sản biến động mạnh; hiệu suất backtest lịch sử — kể cả trên 10+ năm dữ liệu — <b>không đảm bảo</b> lợi nhuận trong tương lai và không tính đến mọi rủi ro thực tế (trượt giá, thanh khoản, đòn bẩy, tin tức bất ngờ...). Trước khi giao dịch bằng tiền thật, hãy tự nghiên cứu thêm và cân nhắc tham khảo ý kiến của một cố vấn tài chính được cấp phép.
@@ -289,7 +311,7 @@
       <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
         <p><b>Nguồn dữ liệu:</b> Giá OHLC hằng ngày của OANDA:XAUUSD, xuất trực tiếp từ layout TradingView "Nguyên 7" của bạn (tính năng "Download chart data" chính chủ của TradingView) — không dùng nguồn nào khác.</p>
         <p><b>Cách backtest:</b> Với mỗi chiến lược, engine tách dữ liệu thành phần "trong mẫu" (train, ~70% đầu) để tối ưu ý tưởng, và phần "ngoài mẫu" (test, ~30% cuối) để đánh giá công bằng — giống hệt cách một chiến lược sẽ hoạt động trên dữ liệu nó "chưa từng thấy". Lệnh được giả định khớp ở giá mở cửa của ngày kế tiếp sau khi có tín hiệu ở giá đóng cửa, có trừ chi phí giao dịch ước tính (5 điểm cơ bản mỗi lần đổi vị thế) để mô phỏng spread/trượt giá.</p>
-        <p><b>Bộ chiến lược thử nghiệm:</b> 9 họ chiến lược kỹ thuật kinh điển (SMA/EMA crossover, RSI mean-reversion, MACD, Bollinger Bands (đảo chiều &amp; breakout), Donchian breakout, Momentum, ATR trend) × nhiều bộ tham số khác nhau — tổng cộng 77 biến thể được chấm điểm.</p>
+        <p><b>Bộ chiến lược thử nghiệm:</b> một nhóm chiến lược kỹ thuật kinh điển "cốt lõi" (SMA/EMA crossover, Bollinger breakout, Donchian breakout, ATR trend...) cộng với các chiến lược do AI tự sáng chế thêm mỗi ngày. Từ 2026-09-05, số họ cốt lõi và lưới tham số của chúng được tự động rà soát/tối ưu mỗi ngày (xem mục "Tối ưu chiến lược cốt lõi" và nhật ký thay đổi bên dưới), nên số lượng chính xác có thể thay đổi theo thời gian thay vì cố định.</p>
         <p><b>Cơ chế "thử — không hiệu quả thì đổi":</b> Mục "Lịch sử thử &amp; đổi chiến lược" mô phỏng việc chạy hệ thống thực tế theo từng quý: tại mỗi mốc, engine chỉ nhìn vào ~2 năm dữ liệu ngay trước đó (không nhìn tương lai) để chọn chiến lược đang mạnh nhất, áp dụng cho quý kế tiếp, ghi nhận kết quả thật, và có thể đổi sang chiến lược khác ở quý sau nếu một chiến lược khác vượt lên. Đây là bằng chứng minh bạch — kể cả những giai đoạn engine chọn sai.</p>
         <p><b>Cập nhật hằng ngày:</b> Một tác vụ theo lịch chạy mỗi ngày sẽ lấy thêm dữ liệu mới nhất từ layout "Nguyên 7", chạy lại toàn bộ quá trình tìm &amp; xếp hạng chiến lược, và lưu kết quả (kèm khuyến nghị mua/bán/đứng ngoài của ngày hôm đó) vào lịch sử phía trên.</p>
       </div>
@@ -545,6 +567,50 @@ document.getElementById("liveDot").style.background = "var(--flat)";
     }
   } catch(e){
     console.warn("live data fetch unavailable, showing published snapshot", e);
+  }
+})();
+
+function registryActionChip(action){
+  if(action === "removed") return '<span class="chip action-removed">Đã xoá</span>';
+  if(action === "expanded_grid") return '<span class="chip action-expanded">Mở rộng lưới</span>';
+  if(action === "failed_validation") return '<span class="chip action-failed">Kiểm tra lỗi</span>';
+  return '<span class="chip hold">' + action + '</span>';
+}
+function renderRegistryState(state){
+  const families = state.families || {};
+  const rows1 = Object.entries(families).map(([name, f]) => `<tr>
+    <td>${name}</td>
+    <td class="num pct pos">${f.good_streak || 0}</td>
+    <td class="num pct neg">${f.bad_streak || 0}</td>
+    <td class="mono" style="color:var(--text-muted)">${f.last_checked || "—"}</td>
+  </tr>`).join("");
+  document.getElementById("registryStreakTable").innerHTML = `<thead><tr>
+    <th>Họ chiến lược</th><th>Chuỗi ngày tốt</th><th>Chuỗi ngày xấu</th><th>Kiểm tra gần nhất</th>
+  </tr></thead><tbody>${rows1 || '<tr><td colspan="4">Chưa có dữ liệu</td></tr>'}</tbody>`;
+
+  const log = (state.changelog || []).slice().reverse().slice(0, 20);
+  const rows2 = log.map(e => `<tr>
+    <td class="mono" style="color:var(--text-muted)">${e.date || "—"}</td>
+    <td>${registryActionChip(e.action)}</td>
+    <td>${e.family || "—"}</td>
+    <td style="max-width:38ch">${e.reason || e.error || "—"}</td>
+  </tr>`).join("");
+  document.getElementById("registryChangelogTable").innerHTML = `<thead><tr>
+    <th>Ngày</th><th>Hành động</th><th>Họ chiến lược</th><th>Lý do</th>
+  </tr></thead><tbody>${rows2 || '<tr><td colspan="4">Chưa có thay đổi tự động nào</td></tr>'}</tbody>`;
+
+  document.getElementById("registryBadge").textContent = Object.keys(families).length + " họ đang hoạt động";
+}
+
+(async () => {
+  try {
+    const res = await fetch("../automation/strategy_registry_state.json", {cache:"no-store"});
+    if(res.ok){
+      const state = await res.json();
+      renderRegistryState(state);
+    }
+  } catch(e){
+    console.warn("strategy_registry_state.json fetch unavailable", e);
   }
 })();
 </script>
