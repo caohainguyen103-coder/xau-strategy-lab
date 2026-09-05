@@ -1,0 +1,10 @@
+[
+  {
+    "date": "2026-09-03",
+    "strategy": "Bollinger Breakout",
+    "params": { "n": 14, "k": 2.0 },
+    "position": 1,
+    "label": "MUA (Long)",
+    "as_of_close": 4468.205
+  }
+]
