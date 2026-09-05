@@ -341,8 +341,9 @@
       <summary>Phương pháp &amp; rủi ro (bấm để xem chi tiết)</summary>
       <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
         <p><b>Nguồn dữ liệu:</b> Giá OHLC hằng ngày của OANDA:XAUUSD, xuất trực tiếp từ layout TradingView "Nguyên 7" của bạn (tính năng "Download chart data" chính chủ của TradingView) — không dùng nguồn nào khác.</p>
-        <p><b>Cách backtest:</b> Với mỗi chiến lược, engine tách dữ liệu thành phần "trong mẫu" (train, ~70% đầu) để tối ưu ý tưởng, và phần "ngoài mẫu" (test, ~30% cuối) để đánh giá công bằng — giống hệt cách một chiến lược sẽ hoạt động trên dữ liệu nó "chưa từng thấy". Lệnh được giả định khớp ở giá mở cửa của ngày kế tiếp sau khi có tín hiệu ở giá đóng cửa, có trừ chi phí giao dịch ước tính (5 điểm cơ bản mỗi lần đổi vị thế) để mô phỏng spread/trượt giá.</p>
+        <p><b>Cách backtest:</b> Với mỗi chiến lược, engine tách dữ liệu thành phần "trong mẫu" (train, ~70% đầu) để tối ưu ý tưởng, và phần "ngoài mẫu" (test, ~30% cuối) để đánh giá công bằng — giống hệt cách một chiến lược sẽ hoạt động trên dữ liệu nó "chưa từng thấy". Vị thế của ngày hôm nay được xác định bằng tín hiệu đóng cửa của ngày hôm trước (độ trễ 1 ngày), và lợi nhuận mỗi ngày được tính bằng % thay đổi giá đóng cửa nhân với vị thế đó — KHÔNG giả định khớp lệnh ở giá mở cửa như một số mô tả trước đây (đã sửa cho đúng với code thực tế ngày 2026-09-05). Có trừ chi phí giao dịch ước tính (5 điểm cơ bản mỗi lần đổi vị thế) để mô phỏng spread/trượt giá. <b>Lưu ý quan trọng:</b> giao dịch thực tế sẽ khớp ở mức giá khác (spread, trượt giá, độ trễ khớp lệnh của sàn), nên kết quả live luôn lệch so với con số backtest — không dùng con số này như một cam kết lợi nhuận.</p>
         <p><b>Bộ chiến lược thử nghiệm:</b> một nhóm chiến lược kỹ thuật kinh điển "cốt lõi" (SMA/EMA crossover, Bollinger breakout, Donchian breakout, ATR trend...) cộng với các chiến lược do AI tự sáng chế thêm mỗi ngày. Từ 2026-09-05, số họ cốt lõi và lưới tham số của chúng được tự động rà soát/tối ưu mỗi ngày (xem mục "Tối ưu chiến lược cốt lõi" và nhật ký thay đổi bên dưới), nên số lượng chính xác có thể thay đổi theo thời gian thay vì cố định.</p>
+        <p><b>Rủi ro kiểm định nhiều lần (multiple testing):</b> Mỗi ngày hệ thống có thể tự sáng chế thêm tối đa 5 chiến lược mới, cộng dồn tới tối đa 200 chiến lược, và tất cả được so sánh trên cùng một đoạn dữ liệu "ngoài mẫu" cố định. Càng thử nhiều chiến lược trên cùng một tập test, xác suất một chiến lược trông "tốt" thuần túy do may rủi thống kê càng tăng (data-snooping bias). Hệ thống giảm thiểu một phần rủi ro này bằng cách bắt chiến lược AI mới phải "sống sót" tối thiểu 30 ngày trước khi được tính là đủ tin cậy để vào bảng xếp hạng chính — nhưng đây vẫn là giới hạn cố hữu của phương pháp, không phải bằng chứng chiến lược sẽ tiếp tục hoạt động tốt trong tương lai. Nên xem các chiến lược AI mới phát hiện là "đáng theo dõi", chưa phải "đã được kiểm chứng".</p>
         <p><b>Cơ chế "thử — không hiệu quả thì đổi":</b> Mục "Lịch sử thử &amp; đổi chiến lược" mô phỏng việc chạy hệ thống thực tế theo từng quý: tại mỗi mốc, engine chỉ nhìn vào ~2 năm dữ liệu ngay trước đó (không nhìn tương lai) để chọn chiến lược đang mạnh nhất, áp dụng cho quý kế tiếp, ghi nhận kết quả thật, và có thể đổi sang chiến lược khác ở quý sau nếu một chiến lược khác vượt lên. Đây là bằng chứng minh bạch — kể cả những giai đoạn engine chọn sai.</p>
         <p><b>Cập nhật hằng ngày:</b> Một tác vụ theo lịch chạy mỗi ngày sẽ lấy thêm dữ liệu mới nhất từ layout "Nguyên 7", chạy lại toàn bộ quá trình tìm &amp; xếp hạng chiến lược, và lưu kết quả (kèm khuyến nghị mua/bán/đứng ngoài của ngày hôm đó) vào lịch sử phía trên.</p>
       </div>
@@ -663,18 +664,23 @@ function renderRegistryState(state){
   }
 })();
 
-// quicknav: highlight the section currently in view
+// quicknav: highlight the section currently in view (scroll-position based, fixes a sticky-highlight bug on short sections)
 (() => {
-const navLinks = [...document.querySelectorAll(".quicknav a")];
-const targets = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
-if(!targets.length) return;
-const setActive = (id) => {
-navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#"+id));
-};
-const io = new IntersectionObserver((entries) => {
-const visible = entries.filter(e => e.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
-if(visible.length) setActive(visible[0].target.id);
-}, {rootMargin: "-64px 0px -70% 0px", threshold: 0});
-targets.forEach(t => io.observe(t));
+  const navLinks = [...document.querySelectorAll(".quicknav a")];
+  const targets = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  if(!targets.length) return;
+  const setActive = (id) => {
+    navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#"+id));
+  };
+  const REF = 90; // px from top, below the sticky quicknav bar
+  function onScroll(){
+    let current = targets[0];
+    for(const t of targets){
+      if(t.getBoundingClientRect().top - REF <= 0) current = t;
+    }
+    setActive(current.id);
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
 })();
 </script>
