@@ -484,28 +484,59 @@ renderAll(SEED, [{
 document.getElementById("dbStatus").textContent = "Snapshot lúc xuất bản";
 document.getElementById("liveDot").style.background = "var(--flat)";
 
-// try to upgrade to live db data
+// try to upgrade to fresher data published alongside this page on GitHub
 (async () => {
   try{
-    const db = await claude.use("db");
-    if(!db){ return; }
-    const runsSnap = await db.collection("runs").orderBy("date","desc").limit(1).get();
-    const sigSnap = await db.collection("signals").orderBy("date","desc").limit(60).get();
-    if(!runsSnap.empty){
-      const latest = runsSnap.docs[0].data();
-      const signalsList = sigSnap.docs.map(d => d.data()).sort((a,b)=> a.date < b.date ? 1 : -1);
-      renderAll(latest, signalsList.length? signalsList: [{
-        date: latest.live_signal.as_of_date,
-        strategy: latest.best_strategy.strategy,
-        params: latest.best_strategy.params,
-        position: latest.live_signal.position,
-        as_of_close: latest.live_signal.as_of_close,
+    const [resultsRes, liveRes, logRes] = await Promise.allSettled([
+      fetch("../results/results.json", {cache:"no-store"}),
+      fetch("../results/live_signal.json", {cache:"no-store"}),
+      fetch("../results/signals_log.json", {cache:"no-store"}),
+    ]);
+
+    let data = SEED, gotFull = false;
+    if(resultsRes.status === "fulfilled" && resultsRes.value.ok){
+      const full = await resultsRes.value.json();
+      if(full && full.generated_at && full.generated_at >= SEED.generated_at){
+        data = full; gotFull = true;
+      }
+    }
+
+    let signalsList = null;
+    if(logRes.status === "fulfilled" && logRes.value.ok){
+      const log = await logRes.value.json();
+      if(Array.isArray(log) && log.length){
+        signalsList = [...log].sort((a,b)=> a.date < b.date ? 1 : -1);
+      }
+    }
+
+    if(liveRes.status === "fulfilled" && liveRes.value.ok){
+      const live = await liveRes.value.json();
+      if(live && live.date && (!data.live_signal || live.date >= data.live_signal.as_of_date)){
+        data = {...data,
+          live_signal: {position: live.position, label: live.label, as_of_date: live.date, as_of_close: live.as_of_close},
+          best_strategy: {...data.best_strategy, strategy: live.strategy, params: live.params},
+        };
+        if(!signalsList){
+          signalsList = [{date: live.date, strategy: live.strategy, params: live.params, position: live.position, as_of_close: live.as_of_close}];
+        }
+      }
+    }
+
+    if(gotFull || signalsList){
+      renderAll(data, signalsList || [{
+        date: data.live_signal.as_of_date,
+        strategy: data.best_strategy.strategy,
+        params: data.best_strategy.params,
+        position: data.live_signal.position,
+        as_of_close: data.live_signal.as_of_close,
       }], {live:true});
-      document.getElementById("dbStatus").textContent = "Dữ liệu trực tiếp";
+      document.getElementById("dbStatus").textContent = gotFull
+        ? "Dữ liệu mới nhất từ GitHub"
+        : "Tín hiệu mới nhất (bảng xếp hạng: snapshot lúc xuất bản)";
       document.getElementById("liveDot").style.background = "var(--long)";
     }
   } catch(e){
-    console.warn("db unavailable, showing published snapshot", e);
+    console.warn("live data fetch unavailable, showing published snapshot", e);
   }
 })();
 </script>
