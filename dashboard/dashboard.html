@@ -209,6 +209,17 @@
 
   ::-webkit-scrollbar{ height:8px; width:8px; }
   ::-webkit-scrollbar-thumb{ background: var(--border); border-radius:8px; }
+
+  .mreturns-tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .mreturns-tabs button{
+    font-size:12px; font-weight:600; padding:7px 13px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface); color:var(--text-muted); cursor:pointer; font-family:'Public Sans', sans-serif;
+  }
+  .mreturns-tabs button.active{ background:var(--accent-soft); color:var(--accent-strong); border-color:transparent; }
+  .mreturns-table td, .mreturns-table th{ text-align:right; white-space:nowrap; }
+  .mreturns-table td:first-child, .mreturns-table th:first-child{ text-align:left; }
+  .mreturns-table td.total{ font-weight:700; border-left:1px solid var(--border); }
+  .mreturns-table td.empty{ color:var(--text-muted); }
 </style>
 
 <div class="wrap">
@@ -230,6 +241,7 @@
 <nav class="quicknav" id="quickNav">
 <a href="#tong-quan">Tổng quan</a>
 <a href="#xep-hang">Xếp hạng</a>
+<a href="#loi-nhuan-thang">Lợi nhuận theo tháng</a>
 <a href="#thu-doi">Thử &amp; đổi</a>
 <a href="#tin-hieu">Tín hiệu hằng ngày</a>
 <a href="#toi-uu">Tối ưu cốt lõi</a>
@@ -282,7 +294,20 @@
     </div>
   </section>
 
-  <div class="two-col" id="thu-doi">
+  <section id="loi-nhuan-thang">
+<div class="section-head">
+<h2>Lợi nhuận theo năm &amp; tháng</h2>
+<div class="note">Top 5 chiến lược trong bảng xếp hạng — lợi nhuận thực tế từng tháng/năm (đã trừ chi phí giao dịch ước tính), tính trên toàn bộ lịch sử dữ liệu hiện có. Đây LÀ backtest, không phải kết quả giao dịch thật. Ô xanh = lãi, ô đỏ = lỗ trong kỳ đó.</div>
+</div>
+<div class="mreturns-tabs" id="mreturnsTabs"></div>
+<div class="card">
+<div class="table-scroll">
+<table class="mreturns-table" id="mreturnsTable"></table>
+</div>
+</div>
+</section>
+
+<div class="two-col" id="thu-doi">
     <section>
       <div class="section-head">
         <h2>Lịch sử thử &amp; đổi chiến lược</h2>
@@ -481,6 +506,38 @@ function renderLeaderboard(data){
     <tbody>${rows}</tbody>`;
 }
 
+let mreturnsSelected = 0;
+function renderMonthlyReturns(data){
+  const top5 = data.leaderboard.slice(0,5).filter(r => r.monthly_returns_pct && r.yearly_returns_pct);
+  const tabsEl = document.getElementById("mreturnsTabs");
+  const tableEl = document.getElementById("mreturnsTable");
+  if(!top5.length){
+    tabsEl.innerHTML = "";
+    tableEl.innerHTML = '<tbody><tr><td style="color:var(--text-muted); padding:10px 4px">Chưa có dữ liệu lợi nhuận theo tháng cho các chiến lược này — sẽ có sau lần chạy tự động tiếp theo.</td></tr></tbody>';
+    return;
+  }
+  if(mreturnsSelected >= top5.length) mreturnsSelected = 0;
+  tabsEl.innerHTML = top5.map((r,i) => `<button data-i="${i}" class="${i===mreturnsSelected?'active':''}">#${i+1} ${r.strategy} (${fmtParams(r.params)})</button>`).join("");
+  [...tabsEl.querySelectorAll("button")].forEach(btn => {
+    btn.addEventListener("click", () => { mreturnsSelected = +btn.dataset.i; renderMonthlyReturns(data); });
+  });
+  const r = top5[mreturnsSelected];
+  const years = Object.keys(r.yearly_returns_pct).sort();
+  const months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+  const head = `<thead><tr><th>Năm</th>${months.map(m=>`<th>T${+m}</th>`).join("")}<th>Cả năm</th></tr></thead>`;
+  const rows = years.map(y => {
+    const cells = months.map(m => {
+      const v = r.monthly_returns_pct[y+"-"+m];
+      if (v === undefined) return `<td class="empty">—</td>`;
+      return `<td class="pct ${pctClass(v)}">${fmtPct(v)}</td>`;
+    }).join("");
+    const yv = r.yearly_returns_pct[y];
+    return `<tr><td>${y}</td>${cells}<td class="total pct ${pctClass(yv)}">${fmtPct(yv)}</td></tr>`;
+  }).join("");
+  tableEl.innerHTML = head + `<tbody>${rows}</tbody>`;
+}
+
+
 function renderWalkForward(data){
   const wf = data.walk_forward;
   document.getElementById("wfNote").textContent =
@@ -548,6 +605,7 @@ function renderAll(data, signalsList, opts={}){
   renderHero(data);
   renderChart(data);
   renderLeaderboard(data);
+renderMonthlyReturns(data);
   renderWalkForward(data);
   renderSignals(signalsList, !!opts.live);
   document.getElementById("lastUpdated").textContent = new Date(data.generated_at).toLocaleString("vi-VN");
