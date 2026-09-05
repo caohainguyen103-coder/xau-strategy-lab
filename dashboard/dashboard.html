@@ -160,6 +160,8 @@
   .chip{ display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600; }
   .chip.switch{ background:var(--accent-soft); color:var(--accent-strong); }
   .chip.hold{ background:var(--flat-soft); color:var(--flat); }
+  .chip.ai-trial{ background:var(--accent-soft); color:var(--accent-strong); margin-left:6px; }
+  .chip.ai-eligible{ background:var(--long-soft); color:var(--long); margin-left:6px; }
 
   .usage-bars{ display:flex; flex-direction:column; gap:8px; }
   .usage-row{ display:grid; grid-template-columns: 150px 1fr 70px; gap:10px; align-items:center; font-size:12.5px; }
@@ -237,7 +239,7 @@
   <section>
     <div class="section-head">
       <h2>Bảng xếp hạng chiến lược</h2>
-      <div class="note">Xếp theo hiệu suất điều chỉnh rủi ro trên dữ liệu <b>ngoài mẫu</b> (out-of-sample) — phần dữ liệu engine chưa "nhìn thấy" khi chọn tham số.</div>
+      <div class="note">Xếp theo hiệu suất điều chỉnh rủi ro trên dữ liệu <b>ngoài mẫu</b> (out-of-sample) — phần dữ liệu engine chưa "nhìn thấy" khi chọn tham số. Mỗi ngày hệ thống còn tự sáng chế thêm một chiến lược mới (nhãn <span class="chip ai-trial" style="margin-left:0">AI · thử nghiệm</span>) — chiến lược AI phải trải qua 30 ngày mới được xét làm khuyến nghị mua/bán chính (nhãn <span class="chip ai-eligible" style="margin-left:0">AI ✓</span>), để tránh chọn nhầm chiến lược chỉ tốt do trùng hợp ngẫu nhiên.</div>
     </div>
     <div class="card">
       <div class="table-scroll">
@@ -393,9 +395,15 @@ function renderChart(data){
 function renderLeaderboard(data){
   const rows = data.leaderboard.map((r,i) => {
     const t = r.test;
+    let originBadge = "";
+    if(r.origin === "ai"){
+      originBadge = r.eligible
+        ? '<span class="chip ai-eligible" title="Do Claude tự sáng chế, đã qua 30 ngày thử nghiệm">AI ✓</span>'
+        : '<span class="chip ai-trial" title="Do Claude tự sáng chế, đang trong giai đoạn thử nghiệm 30 ngày — chưa được dùng làm khuyến nghị mua/bán chính">AI · thử nghiệm</span>';
+    }
     return `<tr>
       <td><span class="rank-badge">${i+1}</span></td>
-      <td>${r.strategy}</td>
+      <td>${r.strategy}${originBadge}</td>
       <td class="mono" style="color:var(--text-muted)">${fmtParams(r.params)}</td>
       <td class="num">${t.n_trades}</td>
       <td class="num pct ${pctClass(t.cagr_pct)}">${fmtPct(t.cagr_pct)}</td>
