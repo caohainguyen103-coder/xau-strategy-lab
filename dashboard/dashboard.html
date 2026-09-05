@@ -20,6 +20,7 @@
     --flat-soft: #EAE5D8;
     --shadow: 0 1px 2px rgba(24,20,10,.06), 0 8px 24px -12px rgba(24,20,10,.18);
     --radius: 14px;
+    --zebra: rgba(24,20,10,.028);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -39,6 +40,7 @@
       --flat: #9099A1;
       --flat-soft: #24262A;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.6);
+      --zebra: rgba(255,255,255,.035);
     }
   }
   :root[data-theme="dark"]{
@@ -58,6 +60,7 @@
     --flat: #9099A1;
     --flat-soft: #24262A;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.6);
+    --zebra: rgba(255,255,255,.035);
   }
 
   *{ box-sizing: border-box; }
@@ -184,6 +187,26 @@
   .badge-live{ font-size:11px; padding:3px 9px; border-radius:999px; background:var(--long-soft); color:var(--long); font-weight:600; }
   .badge-seed{ font-size:11px; padding:3px 9px; border-radius:999px; background:var(--flat-soft); color:var(--flat); font-weight:600; }
 
+  section{ scroll-margin-top: 62px; }
+
+  .quicknav{ position:sticky; top:0; z-index:20; display:flex; gap:8px; flex-wrap:wrap; padding:10px 0; margin-bottom:22px; background:var(--bg); }
+  .quicknav a{ font-size:12px; font-weight:600; padding:7px 13px; border-radius:999px; background:var(--surface); border:1px solid var(--border); color:var(--text-muted); text-decoration:none; transition:color .15s, border-color .15s, background .15s; }
+  .quicknav a:hover{ color:var(--text); border-color:var(--accent); }
+  .quicknav a.active{ color:var(--accent-strong); border-color:var(--accent); background:var(--accent-soft); }
+
+  .card{ transition: box-shadow .15s; }
+  .card:hover{ box-shadow: 0 2px 4px rgba(24,20,10,.08), 0 12px 28px -12px rgba(24,20,10,.22); }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card:hover{ box-shadow: 0 2px 4px rgba(0,0,0,.5), 0 14px 34px -16px rgba(0,0,0,.7); } }
+  :root[data-theme="dark"] .card:hover{ box-shadow: 0 2px 4px rgba(0,0,0,.5), 0 14px 34px -16px rgba(0,0,0,.7); }
+
+  tbody tr:nth-child(even) td{ background: var(--zebra); }
+
+  .stat-tile{ border-left: 3px solid transparent; }
+  .stat-tile.pos{ border-left-color: var(--long); }
+  .stat-tile.neg{ border-left-color: var(--short); }
+
+  .pnl-total{ font-weight:600; }
+
   ::-webkit-scrollbar{ height:8px; width:8px; }
   ::-webkit-scrollbar-thumb{ background: var(--border); border-radius:8px; }
 </style>
@@ -204,7 +227,15 @@
     </div>
   </header>
 
-  <section>
+<nav class="quicknav" id="quickNav">
+<a href="#tong-quan">Tổng quan</a>
+<a href="#xep-hang">Xếp hạng</a>
+<a href="#thu-doi">Thử &amp; đổi</a>
+<a href="#tin-hieu">Tín hiệu hằng ngày</a>
+<a href="#toi-uu">Tối ưu cốt lõi</a>
+</nav>
+
+  <section id="tong-quan">
     <div class="hero-grid">
       <div class="card signal-card">
         <div class="top-row">
@@ -239,7 +270,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="xep-hang">
     <div class="section-head">
       <h2>Bảng xếp hạng chiến lược</h2>
       <div class="note">Xếp theo hiệu suất điều chỉnh rủi ro trên dữ liệu <b>ngoài mẫu</b> (out-of-sample) — phần dữ liệu engine chưa "nhìn thấy" khi chọn tham số. Mỗi ngày hệ thống còn tự sáng chế thêm một chiến lược mới (nhãn <span class="chip ai-trial" style="margin-left:0">AI · thử nghiệm</span>) — chiến lược AI phải trải qua 30 ngày mới được xét làm khuyến nghị mua/bán chính (nhãn <span class="chip ai-eligible" style="margin-left:0">AI ✓</span>), để tránh chọn nhầm chiến lược chỉ tốt do trùng hợp ngẫu nhiên.</div>
@@ -251,7 +282,7 @@
     </div>
   </section>
 
-  <div class="two-col">
+  <div class="two-col" id="thu-doi">
     <section>
       <div class="section-head">
         <h2>Lịch sử thử &amp; đổi chiến lược</h2>
@@ -271,10 +302,10 @@
     </section>
   </div>
 
-  <section>
+  <section id="tin-hieu">
     <div class="section-head">
       <h2>Lịch sử tín hiệu hằng ngày</h2>
-      <div class="note">Nhật ký các khuyến nghị theo ngày, tích lũy dần khi tác vụ hằng ngày chạy. <span id="signalsBadge"></span></div>
+      <div class="note">Nhật ký các khuyến nghị theo ngày, tích lũy dần khi tác vụ hằng ngày chạy. Cột "P&amp;L trên $1.000" mô phỏng lãi/lỗ nếu luôn nắm giữ đúng vị thế khuyến nghị của ngày hôm trước với vốn $1.000 (chưa trừ phí giao dịch). <span id="signalsBadge"></span> <span id="signalsPnlTotal" class="pnl-total"></span></div>
     </div>
     <div class="card">
       <div class="table-scroll">
@@ -283,7 +314,7 @@
     </div>
   </section>
 
-    <section>
+    <section id="toi-uu">
     <div class="section-head">
       <h2>Tối ưu chiến lược cốt lõi (tự động)</h2>
       <div class="note">Mỗi ngày, tác vụ tự động đánh giá hiệu suất từng họ chiến lược "gốc" và có thể xoá/mở rộng — mọi thay đổi đều được ghi log tại đây. <span id="registryBadge"></span></div>
@@ -335,6 +366,11 @@ function fmtPrice(v){
 function fmtParams(p){
   return Object.entries(p).map(([k,v]) => `${k}=${v}`).join(", ");
 }
+function fmtPnl(v){
+if (v === null || v === undefined || Number.isNaN(v)) return "—";
+const sign = v >= 0 ? "+$" : "-$";
+return sign + Math.abs(v).toFixed(2);
+}
 function signalMeta(position){
   if (position === 1) return {cls:"long", label:"MUA (Long)"};
   if (position === -1) return {cls:"short", label:"BÁN (Short)"};
@@ -362,7 +398,7 @@ function renderHero(data){
     {lbl:"Số lệnh (ngoài mẫu)", val: t.n_trades, cls:""},
   ];
   document.getElementById("statGrid").innerHTML = stats.map(s =>
-    `<div class="card stat-tile"><div class="val ${s.cls}">${s.val}</div><div class="lbl">${s.lbl}</div></div>`
+    `<div class="card stat-tile ${s.cls}"><div class="val ${s.cls}">${s.val}</div><div class="lbl">${s.lbl}</div></div>`
   ).join("");
 
   document.getElementById("chartNote").textContent =
@@ -476,22 +512,35 @@ function renderWalkForward(data){
 }
 
 function renderSignals(list, live){
-  document.getElementById("signalsBadge").innerHTML = live
-    ? '<span class="badge-live">● đang đọc dữ liệu trực tiếp</span>'
-    : '<span class="badge-seed">chỉ có snapshot lúc xuất bản</span>';
-  const rows = list.map(s => {
-    const meta = signalMeta(s.position);
-    return `<tr>
-      <td class="mono">${s.date}</td>
-      <td><span class="signal-pill ${meta.cls}" style="font-size:12.5px; padding:3px 10px;">${meta.label}</span></td>
-      <td>${s.strategy}</td>
-      <td class="mono" style="color:var(--text-muted)">${fmtParams(s.params)}</td>
-      <td class="num mono">$${fmtPrice(s.as_of_close)}</td>
-    </tr>`;
-  }).join("");
-  document.getElementById("signalsTable").innerHTML = `
-    <thead><tr><th>Ngày</th><th>Khuyến nghị</th><th>Chiến lược</th><th>Tham số</th><th class="num">Giá đóng cửa</th></tr></thead>
-    <tbody>${rows}</tbody>`;
+document.getElementById("signalsBadge").innerHTML = live
+? '<span class="badge-live">● đang đọc dữ liệu trực tiếp</span>'
+: '<span class="badge-seed">chỉ có snapshot lúc xuất bản</span>';
+
+const pnls = list.map((s, i) => {
+const prev = list[i+1];
+if (!prev || !prev.as_of_close) return null;
+return (prev.position || 0) * (s.as_of_close - prev.as_of_close) / prev.as_of_close * 1000;
+});
+const validPnls = pnls.filter(v => v !== null && !Number.isNaN(v));
+const totalPnl = validPnls.length ? validPnls.reduce((a,b) => a+b, 0) : null;
+document.getElementById("signalsPnlTotal").innerHTML = totalPnl === null ? "" :
+`· Tổng P&amp;L mô phỏng (${validPnls.length} ngày): <span class="pct ${pctClass(totalPnl)}">${fmtPnl(totalPnl)}</span>`;
+
+const rows = list.map((s, i) => {
+const meta = signalMeta(s.position);
+const pnl = pnls[i];
+return `<tr>
+<td class="mono">${s.date}</td>
+<td><span class="signal-pill ${meta.cls}" style="font-size:12.5px; padding:3px 10px;">${meta.label}</span></td>
+<td>${s.strategy}</td>
+<td class="mono" style="color:var(--text-muted)">${fmtParams(s.params)}</td>
+<td class="num mono">$${fmtPrice(s.as_of_close)}</td>
+<td class="num mono pct ${pctClass(pnl)}">${fmtPnl(pnl)}</td>
+</tr>`;
+}).join("");
+document.getElementById("signalsTable").innerHTML = `
+<thead><tr><th>Ngày</th><th>Khuyến nghị</th><th>Chiến lược</th><th>Tham số</th><th class="num">Giá đóng cửa</th><th class="num" title="Lãi/lỗ mô phỏng nếu giữ đúng vị thế khuyến nghị hôm trước với vốn $1.000">P&amp;L trên $1.000</th></tr></thead>
+<tbody>${rows}</tbody>`;
 }
 
 function renderAll(data, signalsList, opts={}){
@@ -612,5 +661,20 @@ function renderRegistryState(state){
   } catch(e){
     console.warn("strategy_registry_state.json fetch unavailable", e);
   }
+})();
+
+// quicknav: highlight the section currently in view
+(() => {
+const navLinks = [...document.querySelectorAll(".quicknav a")];
+const targets = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+if(!targets.length) return;
+const setActive = (id) => {
+navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#"+id));
+};
+const io = new IntersectionObserver((entries) => {
+const visible = entries.filter(e => e.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
+if(visible.length) setActive(visible[0].target.id);
+}, {rootMargin: "-64px 0px -70% 0px", threshold: 0});
+targets.forEach(t => io.observe(t));
 })();
 </script>
