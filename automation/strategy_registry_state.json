@@ -1,0 +1,37 @@
+{
+  "config": {
+    "bad_streak_threshold_days": 7,
+    "good_streak_threshold_days": 7,
+    "min_families": 3,
+    "max_variants_per_family": 45,
+    "max_total_variants": 220
+  },
+  "families": {
+    "SMA Crossover": {
+      "bad_streak": 0,
+      "good_streak": 0,
+      "last_checked": null
+    },
+    "EMA Crossover": {
+      "bad_streak": 0,
+      "good_streak": 0,
+      "last_checked": null
+    },
+    "Bollinger Breakout": {
+      "bad_streak": 0,
+      "good_streak": 0,
+      "last_checked": null
+    },
+    "Donchian Breakout": {
+      "bad_streak": 0,
+      "good_streak": 0,
+      "last_checked": null
+    },
+    "ATR Trend (Keltner-style)": {
+      "bad_streak": 0,
+      "good_streak": 0,
+      "last_checked": null
+    }
+  },
+  "changelog": []
+}
