@@ -1,0 +1,7 @@
+[
+  {
+    "date": "2026-09-05",
+    "status": "failed_step2",
+    "reason": "Link chart TradingView đã lưu (layout 'Nguyên 7', https://www.tradingview.com/chart/eV72iquP/) bị hỏng ('Can't open this chart layout') vào khoảng thời gian này, khiến Bước 2 thất bại và toàn bộ nhiệm vụ dừng sớm mỗi ngày mà không ai biết, cho đến khi được phát hiện và sửa thủ công ngày 2026-09-16 (đổi sang URL dạng symbol+interval, không phụ thuộc layout đã lưu). Đây là entry hồi tố duy nhất, ghi lại để giải thích khoảng trống dữ liệu 2026-09-04 -> 2026-09-16."
+  }
+]
